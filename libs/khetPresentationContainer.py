@@ -13,7 +13,8 @@ class KhetPresentationContainer(object):
     This way, we can use different presentation models and keep the logic
     buried in the class, rather than mixed in with the rest of the code.
     """
-    def __init__(self):
+    def __init__(self, skin):
+        self.skin = skin
         pass
         
     def initialize(self):

@@ -42,3 +42,6 @@ class KhetBoardSquare(object):
         
     def removeOccupyingPiece(self):
         delattr(self, 'piece')
+        
+    def getPiece(self):
+        return self.piece

@@ -7,8 +7,8 @@ Created on Wed Oct 19 03:53:17 2016
 
 from .khetPiece import KhetPiece
 class KhetBlockerPiece(KhetPiece):
-    def __init__(self, imageLocation, orientation, pieceType, playersPiece):
-        super().__init__()
+    def __init__(self, imageLocation, playersPiece, orientation = 0):
+        super().__init__(imageLocation, playersPiece, orientation)
         """
         We probably don't need "canBlock", but it's descriptive
         """

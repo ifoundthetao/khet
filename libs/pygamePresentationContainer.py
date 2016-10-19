@@ -33,6 +33,20 @@ class PygamePresentationContainer(KhetPresentationContainer):
     def getEvents(self):
         return pygame.event.get()
         
-    def displayBoard(self):
-        pass
-        
+    def displayBoard(self, board):
+        for columnIndex, currentColumn in enumerate(board.boardState):
+            for rowIndex, square in enumerate(currentColumn):
+                if square.isOccupied():
+                    piece = square.getPiece()
+                    
+                    orientation = piece.getOrientation()
+                    imageLocation = piece.getImageLocation()
+                    pieceImage = pygame.image.load(imageLocation)
+                    
+                    offsets = self.skin.getImageOffsets(square.getRow(), square.getColumn())
+                    if int(orientation) > 0:
+                        rotatingDegrees = -1 * (90.0 * float(orientation))
+                        
+                        pieceImage = pygame.transform.rotate(pieceImage, rotatingDegrees)
+                    self.screen.blit(pieceImage, offsets)
+        self.update()

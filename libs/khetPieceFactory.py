@@ -23,7 +23,6 @@ class KhetPieceFactory(object):
         return piece
 
     def getPieceFromShorthand(self, shorthand):
-        piece = ''
         if shorthand is self.board.PLAYER_ONE_PROTECTED_PIECE:
             imageLocation = self.skin.getFirstPlayerProtectedPieceImageLocation()
             piece = KhetProtectedPiece(playersPiece = 1, imageLocation = imageLocation)
@@ -63,5 +62,6 @@ class KhetPieceFactory(object):
         elif shorthand is self.board.PLAYER_TWO_SHOOTER:
             imageLocation = self.skin.getSecondPlayerShooterImageLocation()
             piece = KhetShooterPiece(playersPiece = 2, imageLocation = imageLocation)
-            
+        else:
+            piece = ''
         return piece
