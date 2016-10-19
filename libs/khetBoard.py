@@ -79,5 +79,6 @@ class KhetBoard(object):
         elif shortHand is self.PLAYER_TWO_SHOOTER:
             imageString = self.skin.getSecondPlayerShooterImageLocation()
         else:
+            #TODO: Fallback to an instance of the default skin for this piece
             imageString = ''
         return imageString
