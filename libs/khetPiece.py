@@ -7,8 +7,7 @@ Created on Wed Oct 19 03:04:12 2016
 
 class KhetPiece(object):
     
-    def __init__(self, imageLocation, orientation, pieceType, playersPiece):
-        self.pieceType = pieceType
+    def __init__(self, imageLocation, playersPiece, orientation = 0):
         self.imageLocation = imageLocation
         self.orientation = orientation
         self.playersPiece = playersPiece
@@ -36,3 +35,9 @@ class KhetPiece(object):
         
     def canShoot(self):
         return self.canShoot
+        
+    def setImageLocation(self, imageLocation):
+        self.imageLocation = imageLocation
+        
+    def getImageLocation(self):
+        return self.imageLocation

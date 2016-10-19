@@ -28,7 +28,7 @@ presentationContainer.update()
 
 board = KhetBoard(defaultSkin)
 
-screen = board.initializeBoard(screen)
+screen = board.initializeBoard(screen, defaultSkin)
 
 #presentationContainer.displayBoard()
 presentationContainer.update()

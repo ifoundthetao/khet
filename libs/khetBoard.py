@@ -41,7 +41,7 @@ class KhetBoard(object):
         self.layout = layout
         self.skin = skin
 
-    def initializeBoard(self, screen):
+    def initializeBoard(self, screen, skin):
         with open(self.layout, encoding = 'utf-8') as board_file:
             self.boardState = playerPieces = json.load(board_file)
 
@@ -50,9 +50,12 @@ class KhetBoard(object):
                 currentSquare = KhetBoardSquare((columnIndex, rowIndex))
 
                 if currentRow != self.EMPTY_SPACE_ON_BOARD:
-                    pieceFactory = KhetPieceFactory(self)
+                    pieceFactory = KhetPieceFactory(self, skin)
                     #todo: Make pieces
-                    
+                    piece = pieceFactory.getPieceFromShorthand(currentRow)
+
+                    currentSquare.setOccupyingPiece(piece)
+
                     imageLocation = self.getImageLocationFromBoardShortHand(currentRow[0])
                     pieceImage = pygame.image.load(imageLocation)
     
@@ -62,6 +65,7 @@ class KhetBoard(object):
     
                         pieceImage = pygame.transform.rotate(pieceImage, rotatingDegrees)
                     screen.blit(pieceImage, offsets)
+                self.boardState[columnIndex][rowIndex] = currentSquare
         return screen
 
     def getImageLocationFromBoardShortHand(self, shortHand):
