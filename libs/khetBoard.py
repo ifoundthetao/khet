@@ -13,6 +13,8 @@ Eventually we will add in an option for custom layouts
 Then maybe a "randomized" layout.
 """
 import json, pygame
+from .khetBoardSquare import KhetBoardSquare
+from .khetPieceFactory import KhetPieceFactory
 
 class KhetBoard(object):
 
@@ -45,7 +47,12 @@ class KhetBoard(object):
 
         for columnIndex, currentColumn in enumerate(playerPieces):
             for rowIndex, currentRow in enumerate(currentColumn):
+                currentSquare = KhetBoardSquare((columnIndex, rowIndex))
+
                 if currentRow != self.EMPTY_SPACE_ON_BOARD:
+                    pieceFactory = KhetPieceFactory(self)
+                    #todo: Make pieces
+                    
                     imageLocation = self.getImageLocationFromBoardShortHand(currentRow[0])
                     pieceImage = pygame.image.load(imageLocation)
     

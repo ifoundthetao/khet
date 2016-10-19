@@ -11,6 +11,13 @@ class KhetBoardSquare(object):
     
     def __init__(self, position):
         self.position = position
+        row = self.getRow()
+        column = self.getColumn()
+        
+        if row == 0 or (column == 1 and (row == 0 or row == 7)):
+            self.setIsInvalidForPlayer2(True)
+        if row == 9 or (column == 8 and (row == 0 or row == 7)):
+            self.setIsInvalidForPlayer1(True)        
         
     def getPosition(self):
         return self.position
@@ -21,11 +28,11 @@ class KhetBoardSquare(object):
     def getRow(self):
         return self.position[1]
         
-    def setIsValidForPlayer1(self, isValid):
-        self.isValidForPlayer1 = isValid
+    def setIsInvalidForPlayer1(self, isValid):
+        self.isInvalidForPlayer1 = isValid
         
-    def setIsValidForPlayer2(self, isValid):
-        self.isValidForPlayer2 = isValid
+    def setIsInvalidForPlayer2(self, isValid):
+        self.isInvalidForPlayer2 = isValid
     
     def setOccupyingPiece(self, piece):
         self.piece = piece
