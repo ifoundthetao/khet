@@ -10,6 +10,7 @@ import sys
 from libs.khetBoard import KhetBoard
 from libs.khetSkin import KhetSkin
 from libs.pygamePresentationContainer import PygamePresentationContainer
+from libs.khetGameState import KhetGameState
 
 GAME_IS_IN_PROGRESS = True
 
@@ -29,11 +30,14 @@ board = KhetBoard(defaultSkin)
 board.initializeBoard(screen, defaultSkin)
 
 presentationContainer.displayBoard(board)
+gameState = KhetGameState()
 
 while GAME_IS_IN_PROGRESS:
-    for event in presentationContainer.getEvents():
+    for event in presentationContainer.getEvents(gameState, board):
         if event.type is presentationContainer.quitEvent:
             presentationContainer.quitPresenting()
             sys.exit()
-        elif event.type is presentationContainer.selectPiece(board, event.type):
+        elif event.type is presentationContainer.selectPiece():
             print("Event loop picked up piece selection.")
+        elif event.type is presentationContainer.movePiece(event.type):
+            print("Event loop picked up piece movement")

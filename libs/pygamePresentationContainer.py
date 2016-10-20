@@ -30,11 +30,13 @@ class PygamePresentationContainer(KhetPresentationContainer):
     def quitPresenting(self):
         pygame.quit()
         
-    def getEvents(self):
+    def getEvents(self, gameState, board):
         #We are doing this here, to keep it out of the main loop.
         #Hopefully this will keep things clean, and allow for other
         #styles of play.
         self.mousePositionX, self.mousePositionY = pygame.mouse.get_pos()
+        self.board = board
+        self.gameState = gameState
         
         return pygame.event.get()
         
@@ -56,9 +58,11 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     self.screen.blit(pieceImage, offsets)
         self.update()
 
-    def selectPiece(self, board, eventType):
+    def selectPiece(self):
         """
         We will return the pygame.MOUSEBUTTONDOWN when this is true
+        that we are selecting a piece.
+        
         otherwise it returns False
         """
         
@@ -66,13 +70,25 @@ class PygamePresentationContainer(KhetPresentationContainer):
         if not isButtonOnePressed:
             return False
         pieceSelected = False
-        for columnIndex, column in enumerate(board.boardState):
+        print ("GameState Players turn:", self.gameState.getPlayersTurn())
+
+        for columnIndex, column in enumerate(self.board.boardState):
             for rowIndex, currentSquare in enumerate(column):
-                #board.skin.getImageOffsets(columnIndex, rowIndex)
                 if currentSquare.isOccupied() \
+                and self.gameState.getPlayersTurn() is currentSquare.piece.getPlayersPiece() \
                 and self.skin.isCollision(rowIndex, columnIndex, self.mousePositionX, self.mousePositionY):
                     pieceSelected = pygame.MOUSEBUTTONDOWN
-
         return pieceSelected
-                
+    
+    def movePiece(self, eventType):
+        """
+        We will return the pygame.MOUSEBUTTONUP when this is true
+        that we are moving a piece.
         
+        otherwise it returns False
+        """
+        #print("Mouse button presses:", pygame.mouse.get_pressed())
+        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
+        if not isButtonOnePressed:
+            return False
+        return pygame.MOUSEBUTTONUP

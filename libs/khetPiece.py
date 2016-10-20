@@ -47,5 +47,8 @@ class KhetPiece(object):
         
     def setIsSelected(self, isSelected):
         self.isSelected = isSelected
+    
+    def getPlayersPiece(self):
+        return self.playersPiece
         
     
