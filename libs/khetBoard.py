@@ -12,7 +12,7 @@ two layouts
 Eventually we will add in an option for custom layouts
 Then maybe a "randomized" layout.
 """
-import json, pygame
+import json
 from .khetBoardSquare import KhetBoardSquare
 from .khetPieceFactory import KhetPieceFactory
 

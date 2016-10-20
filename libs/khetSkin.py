@@ -120,3 +120,19 @@ class KhetSkin(object):
         heightOffset = self.BOARD_BORDER_OFFSET + ((1 + columnNumber) * self.BOARD_DIVIDER_OFFSET) + (columnNumber * self.PIECE_IMAGE_SIZE)
         
         return (widthOffset, heightOffset)
+        
+    def isCollision(self, rowNumber, columnNumber, eventX, eventY):
+        widthOffset = self.BOARD_BORDER_OFFSET + ((1 + rowNumber) * self.BOARD_DIVIDER_OFFSET) + (rowNumber * self.PIECE_IMAGE_SIZE)
+        heightOffset = self.BOARD_BORDER_OFFSET + ((1 + columnNumber) * self.BOARD_DIVIDER_OFFSET) + (columnNumber * self.PIECE_IMAGE_SIZE)
+
+        isWidthColliding = False
+        isHeightColliding = False
+
+        if eventX >= widthOffset and eventX <= (widthOffset + self.PIECE_IMAGE_SIZE):
+            isWidthColliding = True
+        if eventY >= heightOffset and eventY <= (heightOffset + self.PIECE_IMAGE_SIZE):
+            isHeightColliding = True
+        
+        isCollision = isWidthColliding and isHeightColliding        
+        
+        return isCollision

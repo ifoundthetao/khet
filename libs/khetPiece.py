@@ -41,3 +41,11 @@ class KhetPiece(object):
         
     def getImageLocation(self):
         return self.imageLocation
+
+    def isSelected(self):
+        return self.selected
+        
+    def setIsSelected(self, isSelected):
+        self.isSelected = isSelected
+        
+    

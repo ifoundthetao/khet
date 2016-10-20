@@ -11,15 +11,15 @@ from libs.khetBoard import KhetBoard
 from libs.khetSkin import KhetSkin
 from libs.pygamePresentationContainer import PygamePresentationContainer
 
+GAME_IS_IN_PROGRESS = True
+
 defaultSkin = KhetSkin('default')
 presentationContainer = PygamePresentationContainer(defaultSkin)
 
 presentationContainer.initialize()
 
-
-
 # Set the board size
-screen = presentationContainer.createBoard(defaultSkin.getBoardSize())
+screen =presentationContainer.createBoard(defaultSkin.getBoardSize())
 
 presentationContainer.setTitle('Khet 2.0')
 presentationContainer.showEmptyBoard(defaultSkin.getBoardLocation())
@@ -30,8 +30,10 @@ board.initializeBoard(screen, defaultSkin)
 
 presentationContainer.displayBoard(board)
 
-while True:
+while GAME_IS_IN_PROGRESS:
     for event in presentationContainer.getEvents():
         if event.type is presentationContainer.quitEvent:
             presentationContainer.quitPresenting()
             sys.exit()
+        elif event.type is presentationContainer.selectPiece(board, event.type):
+            print("Event loop picked up piece selection.")
