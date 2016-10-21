@@ -42,7 +42,9 @@ class KhetSkin(object):
         is something different.
         """
         self.name = 'khet_images/' + name
+        self.initializeBoardSquareAreas()
         
+
     def getFirstPlayerProtectedPieceImageLocation(self):
         """
         This is a Pharaoh in Khet
@@ -115,24 +117,54 @@ class KhetSkin(object):
     def getBoardSize(self):
         return (self.BOARD_WIDTH, self.BOARD_HEIGHT)
         
-    def getImageOffsets(self, rowNumber, columnNumber):
-        widthOffset = self.BOARD_BORDER_OFFSET + ((1 + rowNumber) * self.BOARD_DIVIDER_OFFSET) + (rowNumber * self.PIECE_IMAGE_SIZE)
-        heightOffset = self.BOARD_BORDER_OFFSET + ((1 + columnNumber) * self.BOARD_DIVIDER_OFFSET) + (columnNumber * self.PIECE_IMAGE_SIZE)
+    def getSquareOffsets(self, rowNumber, columnNumber):
+        widthOffset = (self.BOARD_BORDER_OFFSET 
+                    + ((1 + rowNumber) * self.BOARD_DIVIDER_OFFSET)
+                    + (rowNumber * self.PIECE_IMAGE_SIZE))
+        heightOffset = (self.BOARD_BORDER_OFFSET
+                     + ((1 + columnNumber) * self.BOARD_DIVIDER_OFFSET)
+                     + (columnNumber * self.PIECE_IMAGE_SIZE))
         
         return (widthOffset, heightOffset)
         
     def isCollision(self, rowNumber, columnNumber, eventX, eventY):
-        widthOffset = self.BOARD_BORDER_OFFSET + ((1 + rowNumber) * self.BOARD_DIVIDER_OFFSET) + (rowNumber * self.PIECE_IMAGE_SIZE)
-        heightOffset = self.BOARD_BORDER_OFFSET + ((1 + columnNumber) * self.BOARD_DIVIDER_OFFSET) + (columnNumber * self.PIECE_IMAGE_SIZE)
-
         isWidthColliding = False
         isHeightColliding = False
 
-        if eventX >= widthOffset and eventX <= (widthOffset + self.PIECE_IMAGE_SIZE):
+        (squareLeft,
+        squareRight,
+        squareTop,
+        squareBottom) = self.getSquareDimensionsOnBoard(rowNumber, columnNumber)
+
+        if eventX >= squareLeft and eventX <= squareRight:
             isWidthColliding = True
-        if eventY >= heightOffset and eventY <= (heightOffset + self.PIECE_IMAGE_SIZE):
+        if eventY >= squareTop and eventY <= squareBottom:
             isHeightColliding = True
         
-        isCollision = isWidthColliding and isHeightColliding        
+        isCollision = isWidthColliding and isHeightColliding
         
         return isCollision
+        
+    def getBoardPositionFromCoordinates(self, x, y):
+        for columnIndex, column in enumerate(self.boardSquareAreas):
+            for rowIndex, square in enumerate(column):
+                if self.isCollision(rowIndex, columnIndex, x, y):
+                    return (columnIndex, rowIndex)
+
+        
+    def initializeBoardSquareAreas(self):
+        squares = [[0 for x in range(10)] for x in range(8)]
+        
+        for columnIndex, column in enumerate(squares):
+            for rowIndex, square in enumerate(column):
+                squareDimensions = self.getSquareDimensionsOnBoard(rowIndex, columnIndex)
+                squares[columnIndex][rowIndex] = squareDimensions
+                
+        self.boardSquareAreas = squares
+                
+    def getSquareDimensionsOnBoard(self, rowNumber, columnNumber):
+        squareLeft, squareTop = self.getSquareOffsets(rowNumber, columnNumber)
+        squareRight = squareLeft + self.PIECE_IMAGE_SIZE
+        squareBottom = squareTop + + self.PIECE_IMAGE_SIZE
+        
+        return (squareLeft, squareRight, squareTop, squareBottom)
