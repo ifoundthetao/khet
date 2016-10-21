@@ -50,7 +50,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     imageLocation = piece.getImageLocation()
                     pieceImage = pygame.image.load(imageLocation)
                     
-                    offsets = self.skin.getImageOffsets(square.getRow(), square.getColumn())
+                    offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
                     if int(orientation) > 0:
                         rotatingDegrees = -1 * (90.0 * float(orientation))
                         
@@ -70,17 +70,18 @@ class PygamePresentationContainer(KhetPresentationContainer):
         if not isButtonOnePressed:
             return False
         pieceSelected = False
-        print ("GameState Players turn:", self.gameState.getPlayersTurn())
+        
+        self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
 
         for columnIndex, column in enumerate(self.board.boardState):
             for rowIndex, currentSquare in enumerate(column):
-                if currentSquare.isOccupied() \
-                and self.gameState.getPlayersTurn() is currentSquare.piece.getPlayersPiece() \
-                and self.skin.isCollision(rowIndex, columnIndex, self.mousePositionX, self.mousePositionY):
+                if (currentSquare.isOccupied()
+                and self.gameState.getPlayersTurn() is currentSquare.piece.getPlayersPiece()
+                and self.skin.isCollision(rowIndex, columnIndex, self.mousePositionX, self.mousePositionY)):
                     pieceSelected = pygame.MOUSEBUTTONDOWN
         return pieceSelected
     
-    def movePiece(self, eventType):
+    def movePiece(self, gameState, eventType):
         """
         We will return the pygame.MOUSEBUTTONUP when this is true
         that we are moving a piece.
@@ -89,6 +90,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
         """
         #print("Mouse button presses:", pygame.mouse.get_pressed())
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
-        if not isButtonOnePressed:
+        
+        if (not isButtonOnePressed 
+        and not gameState.hasSelectedPiece()):
             return False
+        print ("Move piece, event type:", pygame.MOUSEBUTTONUP)    
         return pygame.MOUSEBUTTONUP
