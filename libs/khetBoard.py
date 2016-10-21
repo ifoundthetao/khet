@@ -51,34 +51,7 @@ class KhetBoard(object):
 
                 if currentRow != self.EMPTY_SPACE_ON_BOARD:
                     pieceFactory = KhetPieceFactory(self, skin)
-                    #todo: Make pieces
                     piece = pieceFactory.getPreparedPiece(currentRow)
                     currentSquare.setOccupyingPiece(piece)
                 self.boardState[columnIndex][rowIndex] = currentSquare
         return screen
-
-    def getImageLocationFromBoardShortHand(self, shortHand):
-        if shortHand is self.PLAYER_ONE_PROTECTED_PIECE:
-            imageString = self.skin.getFirstPlayerProtectedPieceImageLocation()
-        elif shortHand is self.PLAYER_ONE_SINGLE_DEFLECTOR:
-            imageString = self.skin.getFirstPlayerSingleDeflectorImageLocation()
-        elif shortHand is self.PLAYER_ONE_BLOCKER:
-            imageString = self.skin.getFirstPlayerBlockerImageLocation()
-        elif shortHand is self.PLAYER_ONE_DOUBLE_DEFLECTOR:
-            imageString = self.skin.getFirstPlayerDoubleDeflectorImageLocation()
-        elif shortHand is self.PLAYER_ONE_SHOOTER:
-            imageString = self.skin.getFirstPlayerShooterImageLocation()
-        elif shortHand is self.PLAYER_TWO_PROTECTED_PIECE:
-            imageString = self.skin.getSecondPlayerProtectedPieceImageLocation()
-        elif shortHand is self.PLAYER_TWO_SINGLE_DEFLECTOR:
-            imageString = self.skin.getSecondPlayerSingleDeflectorImageLocation()
-        elif shortHand is self.PLAYER_TWO_BLOCKER:
-            imageString = self.skin.getSecondPlayerBlockerImageLocation()
-        elif shortHand is self.PLAYER_TWO_DOUBLE_DEFLECTOR:
-            imageString = self.skin.getSecondPlayerDoubleDeflectorImageLocation()
-        elif shortHand is self.PLAYER_TWO_SHOOTER:
-            imageString = self.skin.getSecondPlayerShooterImageLocation()
-        else:
-            #TODO: Fallback to an instance of the default skin for this piece
-            imageString = ''
-        return imageString
