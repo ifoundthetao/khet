@@ -23,10 +23,10 @@ class KhetGameState(object):
         return hasattr(self, 'selectedPiece')
         
     def moveComplete(self):
-        if self.playersTurn is FIRST_PLAYER:
-            self.playersTurn = SECOND_PLAYER
+        if self.playersTurn is self.FIRST_PLAYER:
+            self.playersTurn = self.SECOND_PLAYER
         else:
-            self.playersTurn = FIRST_PLAYER
+            self.playersTurn = self.FIRST_PLAYER
         
     def getPlayersTurn(self):
         return self.playersTurn
