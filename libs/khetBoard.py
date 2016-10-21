@@ -51,7 +51,7 @@ class KhetBoard(object):
 
                 if currentRow != self.EMPTY_SPACE_ON_BOARD:
                     pieceFactory = KhetPieceFactory(self, skin)
-                    piece = pieceFactory.getPreparedPiece(currentRow)
+                    piece = pieceFactory.getPreparedPiece(currentRow, (columnIndex, rowIndex))
                     currentSquare.setOccupyingPiece(piece)
                 self.boardState[columnIndex][rowIndex] = currentSquare
         return screen

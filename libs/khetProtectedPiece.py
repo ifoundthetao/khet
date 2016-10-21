@@ -8,6 +8,6 @@ Created on Wed Oct 19 03:14:32 2016
 from .khetPiece import KhetPiece
 
 class KhetProtectedPiece(KhetPiece):
-    def __init__(self, imageLocation, playersPiece, orientation = 0):
-        super().__init__(imageLocation, playersPiece, orientation)
+    def __init__(self, playersPiece, orientation = 0):
+        super().__init__(playersPiece, orientation)
         self.isGameFinishedWhenDead = True

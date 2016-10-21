@@ -69,7 +69,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
         if not isButtonOnePressed:
             return False
-        pieceSelected = False
+        isPieceSelected = False
         
         self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
 
@@ -77,11 +77,15 @@ class PygamePresentationContainer(KhetPresentationContainer):
             for rowIndex, currentSquare in enumerate(column):
                 if (currentSquare.isOccupied()
                 and self.gameState.getPlayersTurn() is currentSquare.piece.getPlayersPiece()
-                and self.skin.isCollision(rowIndex, columnIndex, self.mousePositionX, self.mousePositionY)):
-                    pieceSelected = pygame.MOUSEBUTTONDOWN
-        return pieceSelected
+                and self.skin.isCollision(columnIndex, rowIndex, self.mousePositionX, self.mousePositionY)):
+                    isPieceSelected = pygame.MOUSEBUTTONDOWN
+                    selectedPiece = currentSquare.getPiece()
+                    
+        if isPieceSelected:
+            self.gameState.setSelectedPiece(selectedPiece)
+        return isPieceSelected
     
-    def movePiece(self, gameState, eventType):
+    def movePiece(self, eventType):
         """
         We will return the pygame.MOUSEBUTTONUP when this is true
         that we are moving a piece.
@@ -92,7 +96,23 @@ class PygamePresentationContainer(KhetPresentationContainer):
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
         
         if (not isButtonOnePressed 
-        and not gameState.hasSelectedPiece()):
+        and not self.gameState.hasSelectedPiece()):
             return False
+        
+        piece = self.gameState.getSelectedPiece()
+        if not piece.canMove():  #Looking at you, Sphinx!
+            return False
+           
+        destinationSquare = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        if (destinationSquare.isOccupied()
+        and piece.canSwap()
+        and destinationSquare.getPiece().isSwappable()):
+            # we will need to implement this later
+            pass 
+        
+        if (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())
+        and piece.isInReachOf(destinationSquare)):
+            print("Should be a valid move")
+        
         print ("Move piece, event type:", pygame.MOUSEBUTTONUP)    
         return pygame.MOUSEBUTTONUP

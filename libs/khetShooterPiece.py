@@ -7,9 +7,10 @@ Created on Wed Oct 19 03:53:40 2016
 
 from .khetPiece import KhetPiece
 class KhetShooterPiece(KhetPiece):
-    def __init__(self, imageLocation, playersPiece, orientation = 0):
-        super().__init__(imageLocation, playersPiece, orientation)
+    def __init__(self, playersPiece, orientation = 0):
+        super().__init__(playersPiece, orientation)
         self.canShoot = True
+        self.canMove = False
         
     def canShoot(self):
         return True

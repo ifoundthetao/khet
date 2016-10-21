@@ -41,3 +41,7 @@ while GAME_IS_IN_PROGRESS:
             print("Event loop picked up piece selection.")
         elif event.type is presentationContainer.movePiece(event.type):
             print("Event loop picked up piece movement")
+            
+            
+        #if presentationContaner.shouldUpdate():
+        #    presentationContainer.displayBoard()

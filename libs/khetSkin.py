@@ -117,24 +117,24 @@ class KhetSkin(object):
     def getBoardSize(self):
         return (self.BOARD_WIDTH, self.BOARD_HEIGHT)
         
-    def getSquareOffsets(self, rowNumber, columnNumber):
-        widthOffset = (self.BOARD_BORDER_OFFSET 
-                    + ((1 + rowNumber) * self.BOARD_DIVIDER_OFFSET)
-                    + (rowNumber * self.PIECE_IMAGE_SIZE))
-        heightOffset = (self.BOARD_BORDER_OFFSET
-                     + ((1 + columnNumber) * self.BOARD_DIVIDER_OFFSET)
-                     + (columnNumber * self.PIECE_IMAGE_SIZE))
+    def getSquareOffsets(self, columnIndex, rowIndex):
+        heightOffset = (self.BOARD_BORDER_OFFSET 
+                    + ((1 + rowIndex) * self.BOARD_DIVIDER_OFFSET)
+                    + (rowIndex * self.PIECE_IMAGE_SIZE))
+        widthOffset = (self.BOARD_BORDER_OFFSET
+                     + ((1 + columnIndex) * self.BOARD_DIVIDER_OFFSET)
+                     + (columnIndex * self.PIECE_IMAGE_SIZE))
         
         return (widthOffset, heightOffset)
         
-    def isCollision(self, rowNumber, columnNumber, eventX, eventY):
+    def isCollision(self, columnIndex, rowIndex, eventX, eventY):
         isWidthColliding = False
         isHeightColliding = False
 
         (squareLeft,
         squareRight,
         squareTop,
-        squareBottom) = self.getSquareDimensionsOnBoard(rowNumber, columnNumber)
+        squareBottom) = self.getSquareDimensionsOnBoard(columnIndex, rowIndex)
 
         if eventX >= squareLeft and eventX <= squareRight:
             isWidthColliding = True
@@ -148,7 +148,7 @@ class KhetSkin(object):
     def getBoardPositionFromCoordinates(self, x, y):
         for columnIndex, column in enumerate(self.boardSquareAreas):
             for rowIndex, square in enumerate(column):
-                if self.isCollision(rowIndex, columnIndex, x, y):
+                if self.isCollision(columnIndex, rowIndex, x, y):
                     return (columnIndex, rowIndex)
 
         
@@ -157,14 +157,47 @@ class KhetSkin(object):
         
         for columnIndex, column in enumerate(squares):
             for rowIndex, square in enumerate(column):
-                squareDimensions = self.getSquareDimensionsOnBoard(rowIndex, columnIndex)
+                squareDimensions = self.getSquareDimensionsOnBoard(columnIndex, rowIndex)
                 squares[columnIndex][rowIndex] = squareDimensions
                 
         self.boardSquareAreas = squares
                 
-    def getSquareDimensionsOnBoard(self, rowNumber, columnNumber):
-        squareLeft, squareTop = self.getSquareOffsets(rowNumber, columnNumber)
+    def getSquareDimensionsOnBoard(self, columnIndex, rowIndex):
+        squareLeft, squareTop = self.getSquareOffsets(columnIndex, rowIndex)
         squareRight = squareLeft + self.PIECE_IMAGE_SIZE
         squareBottom = squareTop + + self.PIECE_IMAGE_SIZE
         
         return (squareLeft, squareRight, squareTop, squareBottom)
+        
+    def getImageLocationBasedOnPiece(self, piece):
+        if type(piece).__name__ is 'KhetProtectedPiece':
+            if piece.isPlayerOne() is True:
+                imageLocation = self.getFirstPlayerProtectedPieceImageLocation()
+            else:
+                imageLocation = self.getSecondPlayerProtectedPieceImageLocation()
+        elif type(piece).__name__ is 'KhetBlockerPiece':
+            if piece.isPlayerOne() is True:
+                imageLocation = self.getFirstPlayerBlockerImageLocation()
+            else:
+                imageLocation = self.getSecondPlayerBlockerImageLocation()
+        elif type(piece).__name__ is 'KhetShooterPiece':
+            if piece.isPlayerOne() is True:
+                imageLocation = self.getFirstPlayerShooterImageLocation()
+            else:
+                imageLocation = self.getSecondPlayerShooterImageLocation()
+        elif type(piece).__name__ is 'KhetSingleDeflectorPiece':
+            if piece.isPlayerOne() is True:
+                imageLocation = self.getFirstPlayerSingleDeflectorImageLocation()
+            else:
+                imageLocation = self.getSecondPlayerSingleDeflectorImageLocation()
+        elif type(piece).__name__ is 'KhetDoubleDeflectorPiece':
+            if piece.isPlayerOne() is True:
+                imageLocation = self.getFirstPlayerDoubleDeflectorImageLocation()
+            else:
+                imageLocation = self.getSecondPlayerDoubleDeflectorImageLocation()
+        else:
+            imageLocation = self.getSecondPlayerDoubleDeflectorImageLocation()            
+            print("Nothing!")
+            
+        return imageLocation
+        

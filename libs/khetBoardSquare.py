@@ -6,8 +6,8 @@ Created on Wed Oct 19 02:42:10 2016
 """
 
 class KhetBoardSquare(object):
-    isInvalidForPlayer1 = 0
-    isInvalidForPlayer2 = 0
+    isValidForPlayer1 = True
+    isValidForPlayer2 = True
     
     def __init__(self, position):
         self.position = position
@@ -15,9 +15,9 @@ class KhetBoardSquare(object):
         column = self.getColumn()
         
         if row == 0 or (column == 1 and (row == 0 or row == 7)):
-            self.setIsInvalidForPlayer2(True)
+            self.setIsValidForPlayer2(False)
         if row == 9 or (column == 8 and (row == 0 or row == 7)):
-            self.setIsInvalidForPlayer1(True)        
+            self.setIsValidForPlayer1(False)
         
     def getPosition(self):
         return self.position
@@ -28,11 +28,11 @@ class KhetBoardSquare(object):
     def getRow(self):
         return self.position[1]
         
-    def setIsInvalidForPlayer1(self, isValid):
-        self.isInvalidForPlayer1 = isValid
+    def setIsValidForPlayer1(self, isValid):
+        self.isValidForPlayer1 = isValid
         
-    def setIsInvalidForPlayer2(self, isValid):
-        self.isInvalidForPlayer2 = isValid
+    def setIsValidForPlayer2(self, isValid):
+        self.isValidForPlayer2 = isValid
     
     def setOccupyingPiece(self, piece):
         self.piece = piece
@@ -45,3 +45,9 @@ class KhetBoardSquare(object):
         
     def getPiece(self):
         return self.piece
+        
+    def isValidForPlayer(self, playerNumber):
+        if playerNumber is 1:
+            return self.isValidForPlayer1
+        else:
+            return self.isValidForPlayer2

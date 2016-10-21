@@ -16,52 +16,51 @@ class KhetPieceFactory(object):
         self.board = board
         self.skin = skin
         
-    def getPreparedPiece(self, shorthand):
+    def getPreparedPiece(self, shorthand, boardLocation):
         piece = self.getPieceFromShorthand(shorthand[0])
         piece.setOrientation(shorthand[1])
-
+        piece.setBoardLocation(boardLocation)
+        piece.setImageLocation(self.skin.getImageLocationBasedOnPiece(piece))
         return piece
 
     def getPieceFromShorthand(self, shorthand):
         if shorthand is self.board.PLAYER_ONE_PROTECTED_PIECE:
-            imageLocation = self.skin.getFirstPlayerProtectedPieceImageLocation()
-            piece = KhetProtectedPiece(playersPiece = 1, imageLocation = imageLocation)
+            piece = KhetProtectedPiece(playersPiece = 1)
 
         elif shorthand is self.board.PLAYER_ONE_SINGLE_DEFLECTOR:
-            imageLocation = self.skin.getFirstPlayerSingleDeflectorImageLocation()
-            piece = KhetSingleDeflectorPiece(playersPiece = 1, imageLocation = imageLocation)
+            piece = KhetSingleDeflectorPiece(playersPiece = 1)
             
         elif shorthand is self.board.PLAYER_ONE_BLOCKER:
             imageLocation = self.skin.getFirstPlayerBlockerImageLocation()
-            piece = KhetBlockerPiece(playersPiece = 1, imageLocation = imageLocation)
+            piece = KhetBlockerPiece(playersPiece = 1)
             
         elif shorthand is self.board.PLAYER_ONE_DOUBLE_DEFLECTOR:
             imageLocation = self.skin.getFirstPlayerDoubleDeflectorImageLocation()
-            piece = KhetDoubleDeflectorPiece(playersPiece = 1, imageLocation = imageLocation)
+            piece = KhetDoubleDeflectorPiece(playersPiece = 1)
             
         elif shorthand is self.board.PLAYER_ONE_SHOOTER:
             imageLocation = self.skin.getFirstPlayerShooterImageLocation()
-            piece = KhetShooterPiece(playersPiece = 1, imageLocation = imageLocation)
+            piece = KhetShooterPiece(playersPiece = 1)
             
         elif shorthand is self.board.PLAYER_TWO_PROTECTED_PIECE:
             imageLocation = self.skin.getSecondPlayerProtectedPieceImageLocation()
-            piece = KhetProtectedPiece(playersPiece = 2, imageLocation = imageLocation)
+            piece = KhetProtectedPiece(playersPiece = 2)
             
         elif shorthand is self.board.PLAYER_TWO_SINGLE_DEFLECTOR:
             imageLocation = self.skin.getSecondPlayerSingleDeflectorImageLocation()
-            piece = KhetSingleDeflectorPiece(playersPiece = 2, imageLocation = imageLocation)
+            piece = KhetSingleDeflectorPiece(playersPiece = 2)
             
         elif shorthand is self.board.PLAYER_TWO_BLOCKER:
             imageLocation = self.skin.getSecondPlayerBlockerImageLocation()
-            piece = KhetBlockerPiece(playersPiece = 2, imageLocation = imageLocation)
+            piece = KhetBlockerPiece(playersPiece = 2)
             
         elif shorthand is self.board.PLAYER_TWO_DOUBLE_DEFLECTOR:
             imageLocation = self.skin.getSecondPlayerDoubleDeflectorImageLocation()
-            piece = KhetDoubleDeflectorPiece(playersPiece = 2, imageLocation = imageLocation)
+            piece = KhetDoubleDeflectorPiece(playersPiece = 2)
             
         elif shorthand is self.board.PLAYER_TWO_SHOOTER:
             imageLocation = self.skin.getSecondPlayerShooterImageLocation()
-            piece = KhetShooterPiece(playersPiece = 2, imageLocation = imageLocation)
+            piece = KhetShooterPiece(playersPiece = 2)
         else:
             piece = ''
         return piece
