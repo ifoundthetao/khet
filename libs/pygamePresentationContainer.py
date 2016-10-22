@@ -80,6 +80,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
             return False
         isSquareSelected = False
         
+        print("type of skin:", type(self.skin))
         (column, row) = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
         
         potentiallySelectedSquare = self.board.boardState[column][row]
@@ -142,17 +143,17 @@ class PygamePresentationContainer(KhetPresentationContainer):
         and destinationSquare.getPiece().canBeSwapped()):
             print("We would be swapping now")
             swappeePiece = self.board.boardState[column][row].getPiece()
-            self.board.boardState[column][row].setOccupyingPiece(piece)
             self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].setOccupyingPiece(swappeePiece)
-            self.gameState.unselectSquare()
-            self.gameState.moveComplete()
         
-        elif (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())
-        and not destinationSquare.isOccupied()):
+        elif (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())):
             print("We should be moving")
-            self.board.boardState[column][row].setOccupyingPiece(piece)
             self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].removeOccupyingPiece()
-            self.gameState.unselectSquare()
-            self.gameState.moveComplete()
 
+        self.board.boardState[column][row].setOccupyingPiece(piece)
+        self.gameState.unselectSquare()
+        self.fireShotAfterTurn()
+        self.gameState.moveComplete()        
         return pygame.MOUSEBUTTONDOWN
+
+    def fireShotAfterTurn(self):
+        print ("Player", self.gameState.getPlayersTurn() , "Shooting!")

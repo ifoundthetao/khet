@@ -14,9 +14,9 @@ class KhetBoardSquare(object):
         self.position = position
         column, row = position        
         
-        if row == 0 or (column == 1 and (row == 0 or row == 7)):
+        if column == 0 or (column == 1 and (row == 0 or row == 7)):
             self.setIsValidForPlayer1(False)
-        if row == 9 or (column == 8 and (row == 0 or row == 7)):
+        if column == 9 or (column == 8 and (row == 0 or row == 7)):
             self.setIsValidForPlayer2(False)
         
     def getPosition(self):
