@@ -13,14 +13,17 @@ class KhetGameState(object):
         self.playersTurn = self.FIRST_PLAYER
 
         
-    def getSelectedPiece(self):
-        return self.selectedPiece
+    def getSelectedSquare(self):
+        return self.selectedSquare
         
-    def setSelectedPiece(self, piece):
-        self.selectedPiece = piece
+    def setSelectedSquare(self, square):
+        self.selectedSquare = square
     
-    def hasSelectedPiece(self):
-        return hasattr(self, 'selectedPiece')
+    def hasSelectedSquare(self):
+        return self.selectedSquare is not None
+        
+    def unselectSquare(self):
+        self.selectedSquare = None
         
     def moveComplete(self):
         if self.playersTurn is self.FIRST_PLAYER:

@@ -10,6 +10,12 @@ from .khetPresentationContainer import KhetPresentationContainer
 class PygamePresentationContainer(KhetPresentationContainer):
     quitEvent = pygame.QUIT
 
+    def setBoard(self, board):
+        self.board = board
+    
+    def setGameState(self, gameState):
+        self.gameState = gameState
+
     def initialize(self):
         pygame.init()
         
@@ -30,18 +36,18 @@ class PygamePresentationContainer(KhetPresentationContainer):
     def quitPresenting(self):
         pygame.quit()
         
-    def getEvents(self, gameState, board):
-        #We are doing this here, to keep it out of the main loop.
-        #Hopefully this will keep things clean, and allow for other
-        #styles of play.
+    def getEvents(self):
+        """
+        We are doing this here, to keep it out of the main loop.
+        Hopefully this will keep things clean, and allow for other
+        styles of play.
+        """
         self.mousePositionX, self.mousePositionY = pygame.mouse.get_pos()
-        self.board = board
-        self.gameState = gameState
         
         return pygame.event.get()
         
-    def displayBoard(self, board):
-        for columnIndex, currentColumn in enumerate(board.boardState):
+    def displayBoard(self):
+        for columnIndex, currentColumn in enumerate(self.board.boardState):
             for rowIndex, square in enumerate(currentColumn):
                 if square.isOccupied():
                     piece = square.getPiece()
@@ -50,7 +56,8 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     imageLocation = piece.getImageLocation()
                     pieceImage = pygame.image.load(imageLocation)
                     
-                    offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
+                    #offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
+                    offsets = self.skin.getSquareOffsets(square.getColumn(), square.getRow())
                     if int(orientation) > 0:
                         rotatingDegrees = -1 * (90.0 * float(orientation))
                         
@@ -58,8 +65,11 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     self.screen.blit(pieceImage, offsets)
         self.update()
 
-    def selectPiece(self):
+    def selectSquare(self):
         """
+        May want to rename to "selectSquare", then return the sqaure,
+        which should have coordinates.
+        
         We will return the pygame.MOUSEBUTTONDOWN when this is true
         that we are selecting a piece.
         
@@ -69,21 +79,21 @@ class PygamePresentationContainer(KhetPresentationContainer):
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
         if not isButtonOnePressed:
             return False
-        isPieceSelected = False
+        isSquareSelected = False
         
-        self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        (column, row) = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        
+        potentiallySelectedSquare = self.board.boardState[column][row]
+        
+        if (potentiallySelectedSquare.isOccupied()
+        and self.gameState.getPlayersTurn() is potentiallySelectedSquare.piece.getPlayersPiece()):
+            isSquareSelected = pygame.MOUSEBUTTONDOWN
+            selectedSquare = potentiallySelectedSquare
 
-        for columnIndex, column in enumerate(self.board.boardState):
-            for rowIndex, currentSquare in enumerate(column):
-                if (currentSquare.isOccupied()
-                and self.gameState.getPlayersTurn() is currentSquare.piece.getPlayersPiece()
-                and self.skin.isCollision(columnIndex, rowIndex, self.mousePositionX, self.mousePositionY)):
-                    isPieceSelected = pygame.MOUSEBUTTONDOWN
-                    selectedPiece = currentSquare.getPiece()
-                    
-        if isPieceSelected:
-            self.gameState.setSelectedPiece(selectedPiece)
-        return isPieceSelected
+        if isSquareSelected:
+            self.gameState.setSelectedSquare(selectedSquare)
+
+        return isSquareSelected
     
     def movePiece(self, eventType):
         """
@@ -97,23 +107,50 @@ class PygamePresentationContainer(KhetPresentationContainer):
         
        
         if (not isButtonOnePressed 
-        or not self.gameState.hasSelectedPiece()):
+        or not self.gameState.hasSelectedSquare()):
             return False
         
-        piece = self.gameState.getSelectedPiece()
-        if piece.canMove() is False:  #Looking at you, Sphinx!
+        selectedSquare = self.gameState.getSelectedSquare()
+        piece = selectedSquare.getPiece()
+        if not piece.canMove():  #Looking at you, Sphinx!
+            print("Piece cannot move")
             return False
-           
-        destinationSquare = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+            
+        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        destinationSquare = self.board.boardState[column][row]
+        
+        if not piece.isInReachOf(destinationSquare):
+            print("Piece is out of reach!")
+            return False
+
+        if not destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn()):
+            print("Destination Square is invalid")
+            return False
+
+        if (destinationSquare.isOccupied()
+        and not piece.canSwap()):
+            print("Destination square is occupied, and we cannot swap!")
+            return False
+
+        if (destinationSquare.isOccupied()
+        and piece.canSwap()
+        and not destinationSquare.getPiece().isSwappable()):
+            print("Destination square is occupiece, we can swap, but the piece is not swappable")
+            return False
+
         if (destinationSquare.isOccupied()
         and piece.canSwap()
         and destinationSquare.getPiece().isSwappable()):
+            print("We would be swapping now")
             # we will need to implement this later
             pass 
         
         if (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())
-        and piece.isInReachOf(destinationSquare)):
-            print("Should be a valid move")
-        
-        print ("Move piece, event type:", pygame.MOUSEBUTTONUP)    
-        return pygame.MOUSEBUTTONUP
+        and not destinationSquare.isOccupied()):
+            print("We should be moving... not sure why we aren't")
+            self.board.boardState[column][row].setOccupyingPiece(piece)
+            self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].removeOccupyingPiece()
+            self.gameState.unselectSquare()
+
+
+        return pygame.MOUSEBUTTONDOWN

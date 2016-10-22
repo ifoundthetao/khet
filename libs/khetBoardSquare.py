@@ -11,6 +11,7 @@ class KhetBoardSquare(object):
     
     def __init__(self, position):
         self.position = position
+        self.piece = None
         row = self.getRow()
         column = self.getColumn()
         
@@ -38,10 +39,10 @@ class KhetBoardSquare(object):
         self.piece = piece
         
     def isOccupied(self):
-        return hasattr(self, 'piece')
+        return self.piece is not None        
         
     def removeOccupyingPiece(self):
-        delattr(self, 'piece')
+        self.piece = None
         
     def getPiece(self):
         return self.piece

@@ -26,22 +26,32 @@ presentationContainer.setTitle('Khet 2.0')
 presentationContainer.showEmptyBoard(defaultSkin.getBoardLocation())
 presentationContainer.update()
 
+gameState = KhetGameState()
+
 board = KhetBoard(defaultSkin)
 board.initializeBoard(screen, defaultSkin)
 
-presentationContainer.displayBoard(board)
-gameState = KhetGameState()
+
+
+presentationContainer.setBoard(board)
+presentationContainer.setGameState(gameState)
+
+presentationContainer.displayBoard()
 
 while GAME_IS_IN_PROGRESS:
-    for event in presentationContainer.getEvents(gameState, board):
+    shouldUpdate = False
+    for event in presentationContainer.getEvents():
         if event.type is presentationContainer.quitEvent:
             presentationContainer.quitPresenting()
             sys.exit()
-        elif event.type is presentationContainer.selectPiece():
+        elif event.type is presentationContainer.selectSquare():
             print("Event loop picked up piece selection.")
+            #shouldUpdate = True
         elif event.type is presentationContainer.movePiece(event.type):
             print("Event loop picked up piece movement")
+            shouldUpdate = True
             
             
-        #if presentationContaner.shouldUpdate():
-        #    presentationContainer.displayBoard()
+        if shouldUpdate:
+            print ("We should be updating...")
+            presentationContainer.displayBoard()

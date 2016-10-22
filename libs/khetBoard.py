@@ -46,12 +46,12 @@ class KhetBoard(object):
             self.boardState = playerPieces = json.load(board_file)
 
         for columnIndex, currentColumn in enumerate(playerPieces):
-            for rowIndex, currentRow in enumerate(currentColumn):
+            for rowIndex, boardFileSquarePosition in enumerate(currentColumn):
                 currentSquare = KhetBoardSquare((columnIndex, rowIndex))
 
-                if currentRow != self.EMPTY_SPACE_ON_BOARD:
+                if boardFileSquarePosition != self.EMPTY_SPACE_ON_BOARD:
                     pieceFactory = KhetPieceFactory(self, skin)
-                    piece = pieceFactory.getPreparedPiece(currentRow, (columnIndex, rowIndex))
+                    piece = pieceFactory.getPreparedPiece(boardFileSquarePosition, (columnIndex, rowIndex))
                     currentSquare.setOccupyingPiece(piece)
                 self.boardState[columnIndex][rowIndex] = currentSquare
         return screen

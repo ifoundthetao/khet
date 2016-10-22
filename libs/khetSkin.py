@@ -153,7 +153,7 @@ class KhetSkin(object):
 
         
     def initializeBoardSquareAreas(self):
-        squares = [[0 for x in range(10)] for x in range(8)]
+        squares = [[0 for x in range(8)] for x in range(10)]
         
         for columnIndex, column in enumerate(squares):
             for rowIndex, square in enumerate(column):
