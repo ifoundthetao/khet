@@ -9,8 +9,8 @@ from .khetPiece import KhetPiece
 class KhetShooterPiece(KhetPiece):
     def __init__(self, playersPiece, orientation = 0):
         super().__init__(playersPiece, orientation)
-        self.canShoot = True
-        self.canMove = False
+        self.isShooter = True
+        self.isMovable = False
         
     def canShoot(self):
         return True

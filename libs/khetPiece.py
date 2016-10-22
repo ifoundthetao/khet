@@ -4,55 +4,45 @@ Created on Wed Oct 19 03:04:12 2016
 
 @author: tbolton
 """
-
 class KhetPiece(object):
     
     def __init__(self, playersPiece, orientation = 0, imageLocation = ''):
         self.imageLocation = imageLocation
         self.orientation = orientation
         self.playersPiece = playersPiece
-        self.canMove = True
-        self.canShoot = False
-        self.canSwap = False
-        self.canBlock = False
-        self.canReflect = False
-        self.isGameFinishedWhenDead = False
-        self.boardLocation = (None, None)
+        self.isMovable = True
+        self.isShooter = False
+        self.isSwapper = False
+        self.isBlocker = False
+        self.isReflecter = False
         self.isSwappable = False
+        self.deathMeansGameEnd = False
+        self.boardLocation = (None, None)
         
     def getOrientation(self):
         return self.orientation
         
     def setOrientation(self, orientation):
         self.orientation = orientation
-        
-    def wasShotFatal(self, shotDirection):
-        return False
-    
-    def didReflect(self, shotDirection):
-        return self.canReflect
-        
-    def didBlock(self, shotDirection):
-        return self.canBlock
-        
-    def canShoot(self):
-        return self.canShoot
-        
-    def canSwap(self):
-        return self.canSwap
+
+    def getImageLocation(self):
+        return self.imageLocation
         
     def setImageLocation(self, imageLocation):
         self.imageLocation = imageLocation
         
-    def getImageLocation(self):
-        return self.imageLocation
-        
-    def setBoardLocation(self, boardLocation):
-        self.boardLocation
-    
     def getBoardLocation(self):
         return self.boardLocation
 
+    def setBoardLocation(self, boardLocation):
+        self.boardLocation
+
+    def isInReachOf(self, square):
+        return True
+        
+    def isPlayerOne(self):
+        return self.playersPiece == 1
+    
     def isSelected(self):
         return self.selected
         
@@ -62,14 +52,27 @@ class KhetPiece(object):
     def getPlayersPiece(self):
         return self.playersPiece
         
-    def isSwappable(self):
+    def canMove(self):
+        return self.isMovable
+        
+    def canShoot(self):
+        return self.isShooter
+        
+    def canSwap(self):
+        return self.isSwapper
+
+    def canBeSwapped(self):
         return self.isSwappable
         
-    def isInReachOf(self, square):
-        return True
+    def isGameFinishedWhenDead(self):
+        return self.deathMeansGameEnd
+
+    def didReflect(self, shotDirection):
+        return self.isReflecter
         
-    def isPlayerOne(self):
-        return self.playersPiece == 1
+    def didBlock(self, shotDirection):
+        return self.isBlocker
+
+    def wasShotFatal(self, shotDirection):
+        return False
         
-    def canMove(self):
-        return self.canMove

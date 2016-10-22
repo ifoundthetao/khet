@@ -9,7 +9,8 @@ from .khetPiece import KhetPiece
 class KhetDoubleDeflectorPiece(KhetPiece):
     def __init__(self, playersPiece, orientation = 0):
         super().__init__(playersPiece, orientation = 0)
-        self.canReflect = True
+        self.isReflecter = True
+        self.isSwapper = True
         
     def didReflect(self, shotDirection):
         return True

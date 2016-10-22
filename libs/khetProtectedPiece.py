@@ -10,4 +10,4 @@ from .khetPiece import KhetPiece
 class KhetProtectedPiece(KhetPiece):
     def __init__(self, playersPiece, orientation = 0):
         super().__init__(playersPiece, orientation)
-        self.isGameFinishedWhenDead = True
+        self.deathMeansGameEnd = True

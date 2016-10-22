@@ -20,7 +20,7 @@ presentationContainer = PygamePresentationContainer(defaultSkin)
 presentationContainer.initialize()
 
 # Set the board size
-screen =presentationContainer.createBoard(defaultSkin.getBoardSize())
+screen = presentationContainer.createBoard(defaultSkin.getBoardSize())
 
 presentationContainer.setTitle('Khet 2.0')
 presentationContainer.showEmptyBoard(defaultSkin.getBoardLocation())

@@ -9,12 +9,13 @@ from .khetPiece import KhetPiece
 class KhetSingleDeflectorPiece(KhetPiece):
     def __init__(self, playersPiece, orientation = 0):
         super().__init__(playersPiece, orientation = 0)
-        self.canReflect = True
+        self.isReflecter = True
         self.isSwappable = True
         
     def didReflect(self, shotDirection):
-        if shotDirection == self.orientation \
-        or shotDirection == ((self.orientation + 1) % 4):
+        #TODO: Fix the logic.. See the blocker logic. Then re-evaluate
+        if (shotDirection == self.orientation 
+        or shotDirection == ((self.orientation + 1) % 4)):
             return True
         else:
             return False
