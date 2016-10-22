@@ -95,12 +95,13 @@ class PygamePresentationContainer(KhetPresentationContainer):
         #print("Mouse button presses:", pygame.mouse.get_pressed())
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
         
+       
         if (not isButtonOnePressed 
-        and not self.gameState.hasSelectedPiece()):
+        or not self.gameState.hasSelectedPiece()):
             return False
         
         piece = self.gameState.getSelectedPiece()
-        if not piece.canMove():  #Looking at you, Sphinx!
+        if piece.canMove() is False:  #Looking at you, Sphinx!
             return False
            
         destinationSquare = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)

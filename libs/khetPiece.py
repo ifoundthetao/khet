@@ -50,7 +50,7 @@ class KhetPiece(object):
     def setBoardLocation(self, boardLocation):
         self.boardLocation
     
-    def getBoardLocation():
+    def getBoardLocation(self):
         return self.boardLocation
 
     def isSelected(self):
