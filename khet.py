@@ -42,14 +42,11 @@ while GAME_IS_IN_PROGRESS:
         if event.type is presentationContainer.quitEvent:
             presentationContainer.quitPresenting()
             sys.exit()
-        elif event.type is presentationContainer.selectSquare():
-            print("Event loop picked up piece selection.")
-            #shouldUpdate = True
         elif event.type is presentationContainer.movePiece(event.type):
             print("Event loop picked up piece movement")
             shouldUpdate = True
-            
-            
+        elif event.type is presentationContainer.selectSquare():
+            print("Event loop picked up piece selection.")
+            #shouldUpdate = True            
         if shouldUpdate:
-            print ("We should be updating...")
             presentationContainer.displayBoard()

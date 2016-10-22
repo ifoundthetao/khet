@@ -69,9 +69,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
     def selectSquare(self):
         """
-        May want to rename to "selectSquare", then return the sqaure,
-        which should have coordinates.
-        
         We will return the pygame.MOUSEBUTTONDOWN when this is true
         that we are selecting a piece.
         
@@ -106,8 +103,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         """
         #print("Mouse button presses:", pygame.mouse.get_pressed())
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
-        
-       
+
         if (not isButtonOnePressed 
         or not self.gameState.hasSelectedSquare()):
             return False
@@ -137,24 +133,26 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
         if (destinationSquare.isOccupied()
         and piece.canSwap()
-        and not destinationSquare.getPiece().isSwappable()):
+        and not destinationSquare.getPiece().canBeSwapped()):
             print("Destination square is occupiece, we can swap, but the piece is not swappable")
             return False
 
         if (destinationSquare.isOccupied()
         and piece.canSwap()
-        and destinationSquare.getPiece().isSwappable()):
+        and destinationSquare.getPiece().canBeSwapped()):
             print("We would be swapping now")
-            # we will need to implement this later
-            pass 
+            swappeePiece = self.board.boardState[column][row].getPiece()
+            self.board.boardState[column][row].setOccupyingPiece(piece)
+            self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].setOccupyingPiece(swappeePiece)
+            self.gameState.unselectSquare()
+            self.gameState.moveComplete()
         
-        if (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())
+        elif (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())
         and not destinationSquare.isOccupied()):
-            print("We should be moving... not sure why we aren't")
+            print("We should be moving")
             self.board.boardState[column][row].setOccupyingPiece(piece)
             self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].removeOccupyingPiece()
             self.gameState.unselectSquare()
             self.gameState.moveComplete()
-
 
         return pygame.MOUSEBUTTONDOWN

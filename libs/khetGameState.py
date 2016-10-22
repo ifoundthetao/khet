@@ -11,7 +11,7 @@ class KhetGameState(object):
     
     def __init__(self):
         self.playersTurn = self.FIRST_PLAYER
-
+        self.selectedSquare = None
         
     def getSelectedSquare(self):
         return self.selectedSquare

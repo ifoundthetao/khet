@@ -10,15 +10,14 @@ class KhetBoardSquare(object):
     isValidForPlayer2 = True
     
     def __init__(self, position):
+        self.piece = None        
         self.position = position
-        self.piece = None
-        row = self.getRow()
-        column = self.getColumn()
+        column, row = position        
         
         if row == 0 or (column == 1 and (row == 0 or row == 7)):
-            self.setIsValidForPlayer2(False)
-        if row == 9 or (column == 8 and (row == 0 or row == 7)):
             self.setIsValidForPlayer1(False)
+        if row == 9 or (column == 8 and (row == 0 or row == 7)):
+            self.setIsValidForPlayer2(False)
         
     def getPosition(self):
         return self.position
