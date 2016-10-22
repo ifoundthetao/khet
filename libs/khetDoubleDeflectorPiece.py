@@ -13,10 +13,15 @@ class KhetDoubleDeflectorPiece(KhetPiece):
         self.isSwapper = True
         
     def didReflect(self, shotDirection):
-        return True
+        return self.reflectionDirection(shotDirection)
     
-    def swapPiece(self):
-        """
-        Needs work on this
-        """
-        pass
+    def reflectionDirection(self, shotDirection):
+        if (self.orientation + 1) % 4 == shotDirection:
+            reflectionDirection = self.orientation
+        elif (self.orientation + 2) % 4 == shotDirection:
+            reflectionDirection = (self.orientation + 3 ) % 4
+        elif (self.orientation + 3) % 4 == shotDirection:
+            reflectionDirection = (self.orientation + 3) % 4
+        else:
+            reflectionDirection = self.orientation
+        return reflectionDirection
