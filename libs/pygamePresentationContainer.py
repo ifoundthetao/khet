@@ -29,7 +29,8 @@ class PygamePresentationContainer(KhetPresentationContainer):
         self.screen = pygame.display.set_mode(size)
         return self.screen
     
-    def showEmptyBoard(self, boardLocation):
+    def showEmptyBoard(self):
+        boardLocation = self.skin.getBoardLocation()
         backgroundImage = pygame.image.load(boardLocation)
         self.screen.blit(backgroundImage, (0, 0))        
     
@@ -47,6 +48,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         return pygame.event.get()
         
     def displayBoard(self):
+        self.showEmptyBoard()
         for columnIndex, currentColumn in enumerate(self.board.boardState):
             for rowIndex, square in enumerate(currentColumn):
                 if square.isOccupied():
@@ -114,6 +116,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         piece = selectedSquare.getPiece()
         if not piece.canMove():  #Looking at you, Sphinx!
             print("Piece cannot move")
+            #just for the sake of bugs, we will
             return False
             
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
@@ -151,6 +154,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
             self.board.boardState[column][row].setOccupyingPiece(piece)
             self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].removeOccupyingPiece()
             self.gameState.unselectSquare()
+            self.gameState.moveComplete()
 
 
         return pygame.MOUSEBUTTONDOWN

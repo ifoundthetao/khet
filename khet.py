@@ -23,15 +23,13 @@ presentationContainer.initialize()
 screen = presentationContainer.createBoard(defaultSkin.getBoardSize())
 
 presentationContainer.setTitle('Khet 2.0')
-presentationContainer.showEmptyBoard(defaultSkin.getBoardLocation())
+presentationContainer.showEmptyBoard()
 presentationContainer.update()
 
 gameState = KhetGameState()
 
 board = KhetBoard(defaultSkin)
 board.initializeBoard(screen, defaultSkin)
-
-
 
 presentationContainer.setBoard(board)
 presentationContainer.setGameState(gameState)
