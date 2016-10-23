@@ -13,8 +13,8 @@ class KhetSingleDeflectorPiece(KhetPiece):
         self.isSwappable = True
         
     def didReflect(self, shotDirection):
-        if self.reflectionDirection(shotDirection) is not None:
-            return self.reflectionDirection(shotDirection)
+        if self.getReflectionDirection(shotDirection) is not None:
+            return self.getReflectionDirection(shotDirection)
         else:
             return False
             
@@ -24,12 +24,21 @@ class KhetSingleDeflectorPiece(KhetPiece):
         return not wasReflected
 
     def reflectionDirection(self, shotDirection):
-        if (self.orientation + 1) % 4 == shotDirection:
-        	reflectionDirection = self.orientation
-        elif (self.orientation + 2) % 4 == shotDirection:
-        	reflectionDirection = (self.orientation + 3 ) % 6
+        if self.isShotToFront(shotDirection):
+            reflectionDirection = (self.orientation + 3 ) % 4
+        elif self.isShotToLeft(shotDirection):
+            reflectionDirection = self.orientation
         else:
-        	reflectionDirection = None
-        	print("Should not be here.")
+            reflectionDirection = None
+            print("Should not be here.")
         
         return reflectionDirection
+        
+    def isShotToFront(self, shotDirection):
+    	isHeadShot = (self.orientation == ((shotDirection + 2) % 4))
+    	return isHeadShot
+    
+    def isShotToLeft(self, shotDirection):
+    	isShotToLeft = self.orientation == (shotDirection + 3) % 4
+    	return isShotToLeft
+    
