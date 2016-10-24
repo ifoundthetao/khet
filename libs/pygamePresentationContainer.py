@@ -9,7 +9,8 @@ from .khetPresentationContainer import KhetPresentationContainer
 
 class PygamePresentationContainer(KhetPresentationContainer):
     quitEvent = pygame.QUIT
-
+    GAME_IS_IN_PROGRESS = True
+    
     def setBoard(self, board):
         self.board = board
     
@@ -80,7 +81,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
             return False
         isSquareSelected = False
         
-        print("type of skin:", type(self.skin))
         (column, row) = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
         
         potentiallySelectedSquare = self.board.boardState[column][row]
@@ -119,7 +119,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
         destinationSquare = self.board.boardState[column][row]
         
-        if not piece.isInReachOf(destinationSquare):
+        if not selectedSquare.isInReachOf(destinationSquare):
             print("Piece is out of reach!")
             return False
 
@@ -156,4 +156,121 @@ class PygamePresentationContainer(KhetPresentationContainer):
         return pygame.MOUSEBUTTONDOWN
 
     def fireShotAfterTurn(self):
-        print ("Player", self.gameState.getPlayersTurn() , "Shooting!")
+        LEFT = 3
+        UP = 0
+        RIGHT = 1
+        DOWN = 2
+        
+        if self.gameState.getPlayersTurn() is 1:
+            print ("Player 1 is Shooting!")
+            startingLocation = self.board.boardState[0][0]
+            shooterPiece = startingLocation.getPiece()
+                
+        else:
+            print ("Player 2 is Shooting!")
+            startingLocation = self.board.boardState[9][7]
+            shooterPiece = startingLocation.getPiece()
+            
+        column = startingLocation.getColumn()
+        row = startingLocation.getRow()
+        stillBouncing = True
+        shotDirection = int(shooterPiece.getOrientation())
+        while stillBouncing:
+            print("column:", column, "row:", row)
+            print("Shot direction:", shotDirection)
+            if shotDirection == LEFT:
+                print ("shooting left")
+                targetRow = row
+                targetColumn = column - 1
+            elif shotDirection == RIGHT:
+                print ("shooting right")
+                targetRow = row
+                targetColumn = column + 1
+            elif shotDirection == UP:
+                print ("shooting up")
+                targetRow = row - 1 
+                targetColumn = column
+                print("Target row and column:", row, column)
+            else:
+                print ("shooting down")
+                targetRow = row + 1 
+                targetColumn = column
+                print("Target row and column:", row, column)
+
+            if targetColumn < 0 or targetColumn > 9:
+                stillBouncing = False
+                continue
+            if targetRow < 0 or targetRow > 7:
+                stillBouncing = False
+                continue
+            
+            targetSquare = self.board.boardState[targetColumn][targetRow]
+
+            if targetSquare.isOccupied():
+                print ("targetSquare is occupied")
+                piece = targetSquare.getPiece()
+                # We know that if a shot was fatal, 
+                # then single reflectors will be dead
+                # So we assume if it was not reflected,
+                # it was blocked,
+                # and thus no longer bounces.
+                if not piece.wasShotFatal(shotDirection):
+                    print ("shot was not fatal")
+                    wasReflected = piece.didReflect(shotDirection)
+                    if not wasReflected:
+                        print("Shot was blocked")
+                        stillBouncing = False
+                    else:
+                        initialShotDirection = int(shotDirection)
+                        print("Shot was reflected")
+                        shotDirection = int(piece.getReflectionDirection(shotDirection))
+                        
+                        imageLocation = self.skin.getReflectedShotLocation()                    
+                        shotImage = pygame.image.load(imageLocation)
+                        
+                        rotatingDegrees = None
+                        if shotDirection == LEFT:
+                            if initialShotDirection == UP:
+                                rotatingDegrees = float(3.0 * 90) * -1
+                        elif shotDirection == RIGHT:
+                            if initialShotDirection == UP:
+                                rotatingDegrees = float(2.0 * 90) * -1
+                            else:
+                                rotatingDegrees = float(1.0 * 90) * -1
+                        elif shotDirection == UP:
+                            if initialShotDirection == LEFT:
+                                rotatingDegrees = float(1.0 * 90) * -1
+                        else:
+                            if initialShotDirection == LEFT:
+                                rotatingDegrees = float(2.0 * 90) * -1
+                            else:
+                                rotatingDegrees = float(3.0 * 90) * -1
+                        if rotatingDegrees is not None:
+                            shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
+
+                        offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
+                        self.screen.blit(shotImage, offsets)                
+                        self.update()
+                else:
+                    print("Shot was fatal")
+                    stillBouncing = False
+                    if targetSquare.piece.isGameFinishedWhenDead():
+                        self.GAME_IS_IN_PROGRESS = False
+                    self.board.boardState[targetSquare.getRow()][targetSquare.getColumn()].removeOccupyingPiece()
+            else:
+                imageLocation = self.skin.getStraightShotLocation()                    
+                shotImage = pygame.image.load(imageLocation)
+
+                if (shotDirection == LEFT
+                or shotDirection == RIGHT):
+                    rotatingDegrees = 90.0
+                    shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
+
+                #offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
+                offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
+                self.screen.blit(shotImage, offsets)                
+                self.update()
+            row = targetSquare.getRow()
+            column = targetSquare.getColumn()
+
+                

@@ -12,7 +12,7 @@ from libs.khetSkin import KhetSkin
 from libs.pygamePresentationContainer import PygamePresentationContainer
 from libs.khetGameState import KhetGameState
 
-GAME_IS_IN_PROGRESS = True
+
 
 defaultSkin = KhetSkin('default')
 presentationContainer = PygamePresentationContainer(defaultSkin)
@@ -36,7 +36,7 @@ presentationContainer.setGameState(gameState)
 
 presentationContainer.displayBoard()
 
-while GAME_IS_IN_PROGRESS:
+while presentationContainer.GAME_IS_IN_PROGRESS:
     shouldUpdate = False
     for event in presentationContainer.getEvents():
         if event.type is presentationContainer.quitEvent:
@@ -49,4 +49,5 @@ while GAME_IS_IN_PROGRESS:
             print("Event loop picked up piece selection.")
             #shouldUpdate = True            
         if shouldUpdate:
-            presentationContainer.displayBoard()
+            #presentationContainer.displayBoard()
+            print("Should be updating.. but isn't to see laser.")

@@ -6,17 +6,21 @@ Created on Tue Oct 18 18:02:23 2016
 """
 
 class KhetSkin(object):
-    PLAYER_ONE_PHARAOH_FILE =  'pharaoh_red.png'
-    PLAYER_ONE_PYRAMID_FILE =  'pyramid_mirror_red.png'
-    PLAYER_ONE_ANUBIS_FILE =   'anubis_red.png'
-    PLAYER_ONE_SCARAB_FILE =   'scarab_red.png'
-    PLAYER_ONE_SPHINX_FILE =   'sphinx_red.png'
+    PLAYER_ONE_PROTECTED_PIECE_FILE =  'protected_piece_2.png'
+    PLAYER_ONE_SINGLE_DEFLECTOR_FILE =  'single_deflector_2.png'
+    PLAYER_ONE_BLOCKER_FILE =   'blocker_2.png'
+    PLAYER_ONE_DOUBLE_DEFLECTOR_FILE =   'double_deflector_2.png'
+    PLAYER_ONE_SHOOTER_FILE =   'shooter_2.png'
 
-    PLAYER_TWO_PHARAOH_FILE = 'pharaoh_gray.png'
-    PLAYER_TWO_PYRAMID_FILE = 'pyramid_mirror_gray.png'
-    PLAYER_TWO_ANUBIS_FILE =  'anubis_gray.png'
-    PLAYER_TWO_SCARAB_FILE =  'scarab_gray.png'
-    PLAYER_TWO_SPHINX_FILE =  'sphinx_gray.png'
+    PLAYER_TWO_PROTECTED_PIECE_FILE = 'protected_piece_1.png'
+    PLAYER_TWO_SINGLE_DEFLECTOR_FILE = 'single_deflector_1.png'
+    PLAYER_TWO_BLOCKER_FILE =  'blocker_1.png'
+    PLAYER_TWO_DOUBLE_DEFLECTOR_FILE =  'double_deflector_1.png'
+    PLAYER_TWO_SHOOTER_FILE =  'shooter_1.png'
+
+    SHOT_STRAIGHT_LOCATION = "laser_straight.png"
+    SHOT_REFLECTED_LOCATION = "laser_reflected.png"
+    SHOT_HIT_LOCATION = "laser_hit.png"
 
     BOARD_LOCATION = 'khet_board.png'
     
@@ -49,61 +53,61 @@ class KhetSkin(object):
         """
         This is a Pharaoh in Khet
         """
-        return self.name + '/' + self.PLAYER_ONE_PHARAOH_FILE
+        return self.name + '/' + self.PLAYER_ONE_PROTECTED_PIECE_FILE
 
     def getFirstPlayerSingleDeflectorImageLocation(self):
         """
         This is a pyramid in Khet
         """
-        return self.name + '/' + self.PLAYER_ONE_PYRAMID_FILE
+        return self.name + '/' + self.PLAYER_ONE_SINGLE_DEFLECTOR_FILE
         
     def getFirstPlayerBlockerImageLocation(self):
         """
         This is an Anubis in Khet
         """
-        return self.name + '/' + self.PLAYER_ONE_ANUBIS_FILE
+        return self.name + '/' + self.PLAYER_ONE_BLOCKER_FILE
                 
     def getFirstPlayerDoubleDeflectorImageLocation(self):
         """
         This is a Scarab in Khet
         """
-        return self.name + '/' + self.PLAYER_ONE_SCARAB_FILE
+        return self.name + '/' + self.PLAYER_ONE_DOUBLE_DEFLECTOR_FILE
         
     def getFirstPlayerShooterImageLocation(self):
         """
         This is a Sphinx in Khet
         """
-        return self.name + '/' + self.PLAYER_ONE_SPHINX_FILE   
+        return self.name + '/' + self.PLAYER_ONE_SHOOTER_FILE   
         
     def getSecondPlayerProtectedPieceImageLocation(self):
         """
         This is a Pharaoh in Khet
         """
-        return self.name + '/' + self.PLAYER_TWO_PHARAOH_FILE
+        return self.name + '/' + self.PLAYER_TWO_PROTECTED_PIECE_FILE
 
     def getSecondPlayerSingleDeflectorImageLocation(self):
         """
         This is a pyramid in Khet
         """
-        return self.name + '/' + self.PLAYER_TWO_PYRAMID_FILE
+        return self.name + '/' + self.PLAYER_TWO_SINGLE_DEFLECTOR_FILE
         
     def getSecondPlayerBlockerImageLocation(self):
         """
         This is an Anubis in Khet
         """
-        return self.name + '/' + self.PLAYER_TWO_ANUBIS_FILE
+        return self.name + '/' + self.PLAYER_TWO_BLOCKER_FILE
                 
     def getSecondPlayerDoubleDeflectorImageLocation(self):
         """
         This is a Scarab in Khet
         """
-        return self.name + '/' + self.PLAYER_TWO_SCARAB_FILE
+        return self.name + '/' + self.PLAYER_TWO_DOUBLE_DEFLECTOR_FILE
         
     def getSecondPlayerShooterImageLocation(self):
         """
         This is a Sphinx in Khet
         """
-        return self.name + '/' + self.PLAYER_TWO_SPHINX_FILE
+        return self.name + '/' + self.PLAYER_TWO_SHOOTER_FILE
         
     def getBoardLocation(self):
         return self.name + '/' + self.BOARD_LOCATION
@@ -201,3 +205,11 @@ class KhetSkin(object):
             
         return imageLocation
         
+    def getStraightShotLocation(self):
+        return self.name + '/' + self.SHOT_STRAIGHT_LOCATION
+        
+    def getReflectedShotLocation(self):
+        return self.name + '/' + self.SHOT_REFLECTED_LOCATION
+        
+    def getHitShotLocation(self):
+        return self.name + '/' + self.SHOT_HIT_LOCATION

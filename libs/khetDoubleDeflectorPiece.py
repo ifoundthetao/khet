@@ -13,7 +13,7 @@ class KhetDoubleDeflectorPiece(KhetPiece):
         self.isSwapper = True
         
     def didReflect(self, shotDirection):
-        return self.reflectionDirection(shotDirection)
+        return self.getReflectionDirection(shotDirection)
     
     def getReflectedDirection(self, shotDirection):
     	if self.isShotToFront(shotDirection): 
@@ -26,19 +26,18 @@ class KhetDoubleDeflectorPiece(KhetPiece):
     		reflectedDirection = (self.orientation + 2) % 4
     	return reflectedDirection
     	
-    	
     def isShotToFront(self, shotDirection):
-    	isHeadShot = (self.orientation == ((shotDirection + 2) % 4))
+    	isHeadShot = int((self.orientation) == int(((shotDirection + 2) % 4)))
     	return isHeadShot
     
     def isShotToLeft(self, shotDirection):
-    	isShotToLeft = self.orientation == (shotDirection + 3) % 4
+    	isShotToLeft = int(self.orientation) == int((shotDirection + 3) % 4)
     	return isShotToLeft
     
     def isShotToRight(self, shotDirection):
-    	isShotToRight = self.orientation == (shotDirection + 1) % 4
+    	isShotToRight = int(self.orientation) == int((shotDirection + 1) % 4)
     	return isShotToRight
     
     def isShotToBack(self, shotDirection):
-    	isShotToBack = self.orientation == shotDirection
+    	isShotToBack = int(self.orientation) == int(shotDirection)
     	return isShotToBack

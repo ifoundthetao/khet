@@ -19,26 +19,44 @@ class KhetSingleDeflectorPiece(KhetPiece):
             return False
             
     def wasShotFatal(self, shotDirection):
-        wasReflected = self.didReflect(shotDirection)
+        #print('Type of piece:', type(self))
         
+        wasReflected = self.didReflect(shotDirection)
+        #print('was this reflected:', wasReflected)
         return not wasReflected
 
-    def reflectionDirection(self, shotDirection):
+    def getReflectionDirection(self, shotDirection):
+        shotDirection = int(shotDirection)
         if self.isShotToFront(shotDirection):
-            reflectionDirection = (self.orientation + 3 ) % 4
+            reflectionDirection = (int(self.orientation) + 3 ) % 4
         elif self.isShotToLeft(shotDirection):
             reflectionDirection = self.orientation
         else:
             reflectionDirection = None
-            print("Should not be here.")
         
+        #print ('getReflectedDirection:', reflectionDirection)
         return reflectionDirection
         
     def isShotToFront(self, shotDirection):
-    	isHeadShot = (self.orientation == ((shotDirection + 2) % 4))
-    	return isHeadShot
+        shotDirection = int(shotDirection)
+        """
+        print("isShotToFront")
+        print("Shot Direction:", shotDirection)
+        print("Piece Orientation:", self.orientation)
+        print("(Shot direction + 2) % 4):", ((shotDirection + 2) % 4))
+        """
+        isHeadShot = (int(self.orientation) == int((shotDirection + 2) % 4))
+        #print("isHeadShot:", isHeadShot)
+        return isHeadShot
     
     def isShotToLeft(self, shotDirection):
-    	isShotToLeft = self.orientation == (shotDirection + 3) % 4
-    	return isShotToLeft
-    
+        shotDirection = int(shotDirection)
+        """
+        print("isShotToLeft")
+        print("Shot Direction:", shotDirection)
+        print("Shot Orientation:", self.orientation)
+        print("(Shot direction + 3) % 4):", ((shotDirection + 3) % 4))
+        """
+        isShotToLeft = (int(self.orientation) == int((shotDirection + 3) % 4))
+        #print("isShotToLeft:", isShotToLeft)
+        return isShotToLeft

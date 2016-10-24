@@ -55,7 +55,7 @@ class KhetBlockerPiece(KhetPiece):
         # And the otherway we get, 0 - 2 = -2.
         # So, we take the absolute value, and get 2.  This signals a successful block.
 
-        if abs(shotDirection - self.orientation) == 2:
+        if abs(int(shotDirection) - int(self.orientation)) == 2:
             return True
         else:
             return False

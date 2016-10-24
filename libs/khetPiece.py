@@ -36,9 +36,6 @@ class KhetPiece(object):
 
     def setBoardLocation(self, boardLocation):
         self.boardLocation
-
-    def isInReachOf(self, square):
-        return True
         
     def isPlayerOne(self):
         return self.playersPiece == 1
