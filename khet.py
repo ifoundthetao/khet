@@ -49,5 +49,5 @@ while presentationContainer.GAME_IS_IN_PROGRESS:
             print("Event loop picked up piece selection.")
             #shouldUpdate = True            
         if shouldUpdate:
-            #presentationContainer.displayBoard()
+            presentationContainer.displayBoard()
             print("Should be updating.. but isn't to see laser.")

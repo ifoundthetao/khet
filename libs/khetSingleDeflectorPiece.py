@@ -8,7 +8,7 @@ Created on Wed Oct 19 03:50:32 2016
 from .khetPiece import KhetPiece
 class KhetSingleDeflectorPiece(KhetPiece):
     def __init__(self, playersPiece, orientation = 0):
-        super().__init__(playersPiece, orientation = 0)
+        super().__init__(playersPiece, orientation)
         self.isReflecter = True
         self.isSwappable = True
         
@@ -22,8 +22,9 @@ class KhetSingleDeflectorPiece(KhetPiece):
         #print('Type of piece:', type(self))
         
         wasReflected = self.didReflect(shotDirection)
-        #print('was this reflected:', wasReflected)
-        return not wasReflected
+        print ("Was Reflected:", wasReflected)
+        print("Not was reflected:", (not wasReflected))
+        return wasReflected is False
 
     def getReflectionDirection(self, shotDirection):
         shotDirection = int(shotDirection)
@@ -34,7 +35,6 @@ class KhetSingleDeflectorPiece(KhetPiece):
         else:
             reflectionDirection = None
         
-        #print ('getReflectedDirection:', reflectionDirection)
         return reflectionDirection
         
     def isShotToFront(self, shotDirection):
@@ -54,7 +54,7 @@ class KhetSingleDeflectorPiece(KhetPiece):
         """
         print("isShotToLeft")
         print("Shot Direction:", shotDirection)
-        print("Shot Orientation:", self.orientation)
+        print("Piece Orientation:", self.orientation)
         print("(Shot direction + 3) % 4):", ((shotDirection + 3) % 4))
         """
         isShotToLeft = (int(self.orientation) == int((shotDirection + 3) % 4))

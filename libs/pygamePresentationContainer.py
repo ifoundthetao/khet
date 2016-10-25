@@ -217,7 +217,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
                 if not piece.wasShotFatal(shotDirection):
                     print ("shot was not fatal")
                     wasReflected = piece.didReflect(shotDirection)
-                    if not wasReflected:
+                    if wasReflected is False:
                         print("Shot was blocked")
                         stillBouncing = False
                     else:
@@ -256,7 +256,20 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     stillBouncing = False
                     if targetSquare.piece.isGameFinishedWhenDead():
                         self.GAME_IS_IN_PROGRESS = False
-                    self.board.boardState[targetSquare.getRow()][targetSquare.getColumn()].removeOccupyingPiece()
+                    #self.board.boardState[targetSquare.getRow()][targetSquare.getColumn()].removeOccupyingPiece()
+                    self.board.boardState[targetSquare.getColumn()][targetSquare.getRow()].removeOccupyingPiece()
+                    imageLocation = self.skin.getHitShotLocation()                    
+                    shotImage = pygame.image.load(imageLocation)
+
+                    if (shotDirection == LEFT
+                    or shotDirection == RIGHT):
+                        rotatingDegrees = 90.0
+                        shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
+
+                    #offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
+                    offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
+                    self.screen.blit(shotImage, offsets)                
+                    self.update()
             else:
                 imageLocation = self.skin.getStraightShotLocation()                    
                 shotImage = pygame.image.load(imageLocation)
