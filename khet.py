@@ -46,8 +46,9 @@ while presentationContainer.GAME_IS_IN_PROGRESS:
             presentationContainer.movePiece()
             print("Event loop picked up piece movement")
             #shouldUpdate = True
-        #elif event.type is presentationContainer.changePieceOrientation():
-        #   print("Event loop should change piece orientation")
+        elif event.type is presentationContainer.isChangePieceOrientation():
+            presentationContainer.changePieceOrientation()
+            print("Event loop should change piece orientation")
         elif event.type is presentationContainer.selectSquare():
             print("Event loop picked up piece selection.")
             #shouldUpdate = True            

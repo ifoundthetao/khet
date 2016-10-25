@@ -111,15 +111,53 @@ class PygamePresentationContainer(KhetPresentationContainer):
     def changePieceOrientation(self):
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
 
+        selectedSquare = self.gameState.getSelectedSquare()
+        piece = selectedSquare.getPiece()
+        widthOffset, heightOffset = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
+        if (abs(self.mousePositionX - widthOffset) <= 32):
+            piece.setOrientation(int(piece.getOrientation()) - 1)
+        else:
+            piece.setOrientation(int(piece.getOrientation()) + 1)
+
+        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+
+        self.board.boardState[column][row].setOccupyingPiece(piece)
+        self.gameState.unselectSquare()
+        self.displayBoard()
+        self.fireShotAfterTurn()
+        self.gameState.moveComplete()        
+
+
+    def isChangePieceOrientation(self):
+        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
+
         """
         Button three being pressed is for changing the piece orientation
         """
         if (not isButtonThreePressed 
         or not self.gameState.hasSelectedSquare()):
             return False
-        
-        print ("Change piece orientation")
+
+        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        destinationSquare = self.board.boardState[column][row]
+
+        selectedSquare = self.gameState.getSelectedSquare()
+        piece = selectedSquare.getPiece()
+
+        widthOffset, heightOffset = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
+        xRelativeToSquare = self.mousePositionX - widthOffset
+        yRelativeToSquare = self.mousePositionY - heightOffset
+
+        if (
+            ((xRelativeToSquare <= 32 and xRelativeToSquare >= 0)
+            and (yRelativeToSquare >= 0 and yRelativeToSquare <=32))
+        or  ((xRelativeToSquare >= 32 and xRelativeToSquare <= 64)
+            and (yRelativeToSquare >= 0 and yRelativeToSquare <=32))
+        ):
+            return pygame.MOUSEBUTTONDOWN
+            
         return False
+        
 
     def isMovePiece(self):
         """
