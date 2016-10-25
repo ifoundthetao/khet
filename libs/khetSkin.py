@@ -22,6 +22,8 @@ class KhetSkin(object):
     SHOT_REFLECTED_LOCATION = "laser_reflected.png"
     SHOT_HIT_LOCATION = "laser_hit.png"
 
+    ORIENTATION_CHANGE_ICON_LOCATION = 'change_orientation.png'
+
     BOARD_LOCATION = 'khet_board.png'
     
     BOARD_BORDER_OFFSET = 1 #one pixel for black border
@@ -204,6 +206,9 @@ class KhetSkin(object):
             print("Nothing!")
             
         return imageLocation
+
+    def getOrientationChangeIconLocation(self):
+        return self.name + '/' + self.ORIENTATION_CHANGE_ICON_LOCATION
         
     def getStraightShotLocation(self):
         return self.name + '/' + self.SHOT_STRAIGHT_LOCATION

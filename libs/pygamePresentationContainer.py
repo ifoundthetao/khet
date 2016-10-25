@@ -77,21 +77,37 @@ class PygamePresentationContainer(KhetPresentationContainer):
         """
         
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
-        if not isButtonOnePressed:
+        if (not isButtonOnePressed
+        and not isButtonThreePressed
+        ):
             return False
         isSquareSelected = False
         
+        if isButtonOnePressed:
+            print("Button 1")
+
         (column, row) = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
         
         potentiallySelectedSquare = self.board.boardState[column][row]
         
         if (potentiallySelectedSquare.isOccupied()
         and self.gameState.getPlayersTurn() is potentiallySelectedSquare.piece.getPlayersPiece()):
+            print("Selecting a square")
             isSquareSelected = pygame.MOUSEBUTTONDOWN
             selectedSquare = potentiallySelectedSquare
 
+        self.displayBoard()
+
         if isSquareSelected:
             self.gameState.setSelectedSquare(selectedSquare)
+
+            if isButtonThreePressed:
+                self.willChangeOrientation = True
+                imageLocation = self.skin.getOrientationChangeIconLocation()
+                orientationChangeIcon = pygame.image.load(imageLocation)
+                offsets = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
+                self.screen.blit(orientationChangeIcon, offsets)                
+                self.update()
 
         return isSquareSelected
     
@@ -151,6 +167,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
         self.board.boardState[column][row].setOccupyingPiece(piece)
         self.gameState.unselectSquare()
+        self.displayBoard()
         self.fireShotAfterTurn()
         self.gameState.moveComplete()        
         return pygame.MOUSEBUTTONDOWN
@@ -256,7 +273,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     stillBouncing = False
                     if targetSquare.piece.isGameFinishedWhenDead():
                         self.GAME_IS_IN_PROGRESS = False
-                    #self.board.boardState[targetSquare.getRow()][targetSquare.getColumn()].removeOccupyingPiece()
                     self.board.boardState[targetSquare.getColumn()][targetSquare.getRow()].removeOccupyingPiece()
                     imageLocation = self.skin.getHitShotLocation()                    
                     shotImage = pygame.image.load(imageLocation)
@@ -266,7 +282,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
                         rotatingDegrees = 90.0
                         shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
 
-                    #offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
                     offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
                     self.screen.blit(shotImage, offsets)                
                     self.update()
@@ -279,11 +294,8 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     rotatingDegrees = 90.0
                     shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
 
-                #offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
                 offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
                 self.screen.blit(shotImage, offsets)                
                 self.update()
             row = targetSquare.getRow()
             column = targetSquare.getColumn()
-
-                
