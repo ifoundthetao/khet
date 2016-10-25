@@ -100,27 +100,39 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
         if isSquareSelected:
             self.gameState.setSelectedSquare(selectedSquare)
-
-            if isButtonThreePressed:
-                self.willChangeOrientation = True
-                imageLocation = self.skin.getOrientationChangeIconLocation()
-                orientationChangeIcon = pygame.image.load(imageLocation)
-                offsets = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
-                self.screen.blit(orientationChangeIcon, offsets)                
-                self.update()
+            imageLocation = self.skin.getOrientationChangeIconLocation()
+            orientationChangeIcon = pygame.image.load(imageLocation)
+            offsets = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
+            self.screen.blit(orientationChangeIcon, offsets)                
+            self.update()
 
         return isSquareSelected
-    
-    def movePiece(self, eventType):
+
+    def changePieceOrientation(self):
+        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
+
+        """
+        Button three being pressed is for changing the piece orientation
+        """
+        if (not isButtonThreePressed 
+        or not self.gameState.hasSelectedSquare()):
+            return False
+        
+        print ("Change piece orientation")
+        return False
+
+    def isMovePiece(self):
         """
         We will return the pygame.MOUSEBUTTONUP when this is true
         that we are moving a piece.
         
         otherwise it returns False
         """
-        #print("Mouse button presses:", pygame.mouse.get_pressed())
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
 
+        """
+        Button one being pressed is for moving the actual piece
+        """
         if (not isButtonOnePressed 
         or not self.gameState.hasSelectedSquare()):
             return False
@@ -129,7 +141,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         piece = selectedSquare.getPiece()
         if not piece.canMove():  #Looking at you, Sphinx!
             print("Piece cannot move")
-            #just for the sake of bugs, we will
+            #just for the sake of bugs, we will print logic
             return False
             
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
@@ -154,6 +166,19 @@ class PygamePresentationContainer(KhetPresentationContainer):
             print("Destination square is occupiece, we can swap, but the piece is not swappable")
             return False
 
+        #We will be moving a piece.
+        return pygame.MOUSEBUTTONDOWN
+
+    def movePiece(self):
+        """
+        We are moving (and swapping pieces) in this method
+        They can probably be decoupled later.
+        """
+        selectedSquare = self.gameState.getSelectedSquare()
+        piece = selectedSquare.getPiece()
+        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        destinationSquare = self.board.boardState[column][row]
+        
         if (destinationSquare.isOccupied()
         and piece.canSwap()
         and destinationSquare.getPiece().canBeSwapped()):
