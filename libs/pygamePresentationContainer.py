@@ -83,9 +83,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
             return False
         isSquareSelected = False
         
-        if isButtonOnePressed:
-            print("Button 1")
-
         (column, row) = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
         if column is None and row is None:
             return False
@@ -95,7 +92,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
         
         if (potentiallySelectedSquare.isOccupied()
         and self.gameState.getPlayersTurn() is potentiallySelectedSquare.piece.getPlayersPiece()):
-            print("Selecting a square")
             isSquareSelected = pygame.MOUSEBUTTONDOWN
             selectedSquare = potentiallySelectedSquare
 
@@ -189,8 +185,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
         if not piece.canMove():  #Looking at you, Sphinx!
-            print("Piece cannot move")
-            #just for the sake of bugs, we will print logic
             return False
             
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
@@ -200,29 +194,24 @@ class PygamePresentationContainer(KhetPresentationContainer):
         destinationSquare = self.board.boardState[column][row]
         
         if not selectedSquare.isInReachOf(destinationSquare):
-            print("Piece is out of reach!")
             return False
 
         if not destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn()):
-            print("Destination Square is invalid")
             return False
 
         if (destinationSquare.isOccupied()
         and not piece.canSwap()):
-            print("Destination square is occupied, and we cannot swap!")
             return False
 
         if (destinationSquare.isOccupied()
         and piece.canSwap()
         and not destinationSquare.getPiece().canBeSwapped()):
-            print("Destination square is occupiece, we can swap, but the piece is not swappable")
             return False
 
         if (destinationSquare.isOccupied()
         and piece.canSwap()
         and destinationSquare.getPiece().canBeSwapped()
         and not selectedSquare.isValidForPlayer(self.gameState.getPlayerWhoIsWaiting())):
-            print("Destination square is occupiece, we can swap, the piece is swappable, but the square is not valid for the player to go")
             return False
 
         #We will be moving a piece.
@@ -244,12 +233,10 @@ class PygamePresentationContainer(KhetPresentationContainer):
         if (destinationSquare.isOccupied()
         and piece.canSwap()
         and destinationSquare.getPiece().canBeSwapped()):
-            print("We would be swapping now")
             swappeePiece = self.board.boardState[column][row].getPiece()
             self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].setOccupyingPiece(swappeePiece)
         
         elif (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())):
-            print("We should be moving")
             self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].removeOccupyingPiece()
 
         self.board.boardState[column][row].setOccupyingPiece(piece)
@@ -266,12 +253,10 @@ class PygamePresentationContainer(KhetPresentationContainer):
         DOWN = 2
         
         if self.gameState.getPlayersTurn() is 1:
-            print ("Player 1 is Shooting!")
             startingLocation = self.board.boardState[0][0]
             shooterPiece = startingLocation.getPiece()
                 
         else:
-            print ("Player 2 is Shooting!")
             startingLocation = self.board.boardState[9][7]
             shooterPiece = startingLocation.getPiece()
             
@@ -280,26 +265,18 @@ class PygamePresentationContainer(KhetPresentationContainer):
         stillBouncing = True
         shotDirection = int(shooterPiece.getOrientation())
         while stillBouncing:
-            print("column:", column, "row:", row)
-            print("Shot direction:", shotDirection)
             if shotDirection == LEFT:
-                print ("shooting left")
                 targetRow = row
                 targetColumn = column - 1
             elif shotDirection == RIGHT:
-                print ("shooting right")
                 targetRow = row
                 targetColumn = column + 1
             elif shotDirection == UP:
-                print ("shooting up")
                 targetRow = row - 1 
                 targetColumn = column
-                print("Target row and column:", row, column)
             else:
-                print ("shooting down")
                 targetRow = row + 1 
                 targetColumn = column
-                print("Target row and column:", row, column)
 
             if targetColumn < 0 or targetColumn > 9:
                 stillBouncing = False
@@ -311,7 +288,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
             targetSquare = self.board.boardState[targetColumn][targetRow]
 
             if targetSquare.isOccupied():
-                print ("targetSquare is occupied")
                 piece = targetSquare.getPiece()
                 # We know that if a shot was fatal, 
                 # then single reflectors will be dead
@@ -319,14 +295,11 @@ class PygamePresentationContainer(KhetPresentationContainer):
                 # it was blocked,
                 # and thus no longer bounces.
                 if not piece.wasShotFatal(shotDirection):
-                    print ("shot was not fatal")
                     wasReflected = piece.didReflect(shotDirection)
                     if wasReflected is False:
-                        print("Shot was blocked")
                         stillBouncing = False
                     else:
                         initialShotDirection = int(shotDirection)
-                        print("Shot was reflected")
                         shotDirection = int(piece.getReflectionDirection(shotDirection))
                         
                         imageLocation = self.skin.getReflectedShotLocation()                    
@@ -356,7 +329,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
                         self.screen.blit(shotImage, offsets)                
                         self.update()
                 else:
-                    print("Shot was fatal")
                     stillBouncing = False
                     if targetSquare.piece.isGameFinishedWhenDead():
                         self.GAME_IS_IN_PROGRESS = False

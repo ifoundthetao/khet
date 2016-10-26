@@ -36,9 +36,7 @@ class KhetGameState(object):
 
     def getPlayerWhoIsWaiting(self):
         if self.playersTurn is self.FIRST_PLAYER:
-            print ("SECOND PLAYER IS WAITING")
             waitingPlayer = self.SECOND_PLAYER
         else:
-            print ("FIRST PLAYER IS WAITING")
             waitingPlayer = self.FIRST_PLAYER
         return waitingPlayer

@@ -19,11 +19,8 @@ class KhetSingleDeflectorPiece(KhetPiece):
             return False
             
     def wasShotFatal(self, shotDirection):
-        #print('Type of piece:', type(self))
         
         wasReflected = self.didReflect(shotDirection)
-        print ("Was Reflected:", wasReflected)
-        print("Not was reflected:", (not wasReflected))
         return wasReflected is False
 
     def getReflectionDirection(self, shotDirection):
@@ -39,24 +36,10 @@ class KhetSingleDeflectorPiece(KhetPiece):
         
     def isShotToFront(self, shotDirection):
         shotDirection = int(shotDirection)
-        """
-        print("isShotToFront")
-        print("Shot Direction:", shotDirection)
-        print("Piece Orientation:", self.orientation)
-        print("(Shot direction + 2) % 4):", ((shotDirection + 2) % 4))
-        """
         isHeadShot = (int(self.orientation) == int((shotDirection + 2) % 4))
-        #print("isHeadShot:", isHeadShot)
         return isHeadShot
     
     def isShotToLeft(self, shotDirection):
         shotDirection = int(shotDirection)
-        """
-        print("isShotToLeft")
-        print("Shot Direction:", shotDirection)
-        print("Piece Orientation:", self.orientation)
-        print("(Shot direction + 3) % 4):", ((shotDirection + 3) % 4))
-        """
         isShotToLeft = (int(self.orientation) == int((shotDirection + 3) % 4))
-        #print("isShotToLeft:", isShotToLeft)
         return isShotToLeft

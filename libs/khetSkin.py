@@ -204,7 +204,6 @@ class KhetSkin(object):
                 imageLocation = self.getSecondPlayerDoubleDeflectorImageLocation()
         else:
             imageLocation = self.getSecondPlayerDoubleDeflectorImageLocation()            
-            print("Nothing!")
             
         return imageLocation
 
