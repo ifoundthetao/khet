@@ -18,3 +18,11 @@ class KhetShooterPiece(KhetPiece):
     def shoot(self):
         #Not sure what to do here... 
         pass
+
+    def setOrientation(self, orientation):
+        orientation = int(orientation) % 4
+        if self.playersPiece == 1:
+            self.orientation = 1 if int(orientation) == 1 else 2
+        else:
+            self.orientation = 0 if int(orientation) == 0 else 3
+
