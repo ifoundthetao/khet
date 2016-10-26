@@ -343,10 +343,16 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     imageLocation = self.skin.getHitShotLocation()                    
                     shotImage = pygame.image.load(imageLocation)
 
-                    if (shotDirection == LEFT
-                    or shotDirection == RIGHT):
+                    rotatingDegrees = None
+                    if shotDirection == LEFT:
+                        rotatingDegrees = -90.0
+                    if shotDirection == RIGHT:
                         rotatingDegrees = 90.0
+                    if shotDirection == UP:
+                        rotatingDegrees = 180.0
+                    if rotatingDegrees is not None:
                         shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
+
 
                     offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
                     self.screen.blit(shotImage, offsets)                
