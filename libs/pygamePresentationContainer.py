@@ -114,7 +114,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
         widthOffset, heightOffset = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
-        if (abs(self.mousePositionX - widthOffset) <= 32):
+
+        halfPieceSize = (self.skin.PIECE_IMAGE_SIZE / 2)
+        if (abs(self.mousePositionX - widthOffset) <= halfPieceSize):
             piece.setOrientation(int(piece.getOrientation()) - 1)
         else:
             piece.setOrientation(int(piece.getOrientation()) + 1)
@@ -148,11 +150,12 @@ class PygamePresentationContainer(KhetPresentationContainer):
         xRelativeToSquare = self.mousePositionX - widthOffset
         yRelativeToSquare = self.mousePositionY - heightOffset
 
+        halfPieceSize = (self.skin.PIECE_IMAGE_SIZE / 2)
         if (
-            ((xRelativeToSquare <= 32 and xRelativeToSquare >= 0)
-            and (yRelativeToSquare >= 0 and yRelativeToSquare <=32))
-        or  ((xRelativeToSquare >= 32 and xRelativeToSquare <= 64)
-            and (yRelativeToSquare >= 0 and yRelativeToSquare <=32))
+            ((xRelativeToSquare <= halfPieceSize and xRelativeToSquare >= 0)
+            and (yRelativeToSquare >= 0 and yRelativeToSquare <=halfPieceSize))
+        or  ((xRelativeToSquare >= halfPieceSize and xRelativeToSquare <= self.skin.PIECE_IMAGE_SIZE)
+            and (yRelativeToSquare >= 0 and yRelativeToSquare <=halfPieceSize))
         ):
             return pygame.MOUSEBUTTONDOWN
             
