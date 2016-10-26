@@ -218,6 +218,13 @@ class PygamePresentationContainer(KhetPresentationContainer):
             print("Destination square is occupiece, we can swap, but the piece is not swappable")
             return False
 
+        if (destinationSquare.isOccupied()
+        and piece.canSwap()
+        and destinationSquare.getPiece().canBeSwapped()
+        and not selectedSquare.isValidForPlayer(self.gameState.getPlayerWhoIsWaiting())):
+            print("Destination square is occupiece, we can swap, the piece is swappable, but the square is not valid for the player to go")
+            return False
+
         #We will be moving a piece.
         return pygame.MOUSEBUTTONDOWN
 
