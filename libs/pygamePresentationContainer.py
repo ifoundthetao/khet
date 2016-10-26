@@ -87,6 +87,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
             print("Button 1")
 
         (column, row) = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        if column is None and row is None:
+            return False
+
         
         potentiallySelectedSquare = self.board.boardState[column][row]
         
@@ -122,6 +125,8 @@ class PygamePresentationContainer(KhetPresentationContainer):
             piece.setOrientation(int(piece.getOrientation()) + 1)
 
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        if column is None and row is None:
+            return False
 
         self.board.boardState[column][row].setOccupyingPiece(piece)
         self.gameState.unselectSquare()
@@ -141,6 +146,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
             return False
 
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        if column is None and row is None:
+            return False
+
         destinationSquare = self.board.boardState[column][row]
 
         selectedSquare = self.gameState.getSelectedSquare()
@@ -186,6 +194,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
             return False
             
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        if column is None and row is None:
+            return False
+
         destinationSquare = self.board.boardState[column][row]
         
         if not selectedSquare.isInReachOf(destinationSquare):
@@ -218,6 +229,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
         column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        if column is None and row is None:
+            return False
+
         destinationSquare = self.board.boardState[column][row]
         
         if (destinationSquare.isOccupied()

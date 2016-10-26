@@ -156,6 +156,7 @@ class KhetSkin(object):
             for rowIndex, square in enumerate(column):
                 if self.isCollision(columnIndex, rowIndex, x, y):
                     return (columnIndex, rowIndex)
+        return (None, None)
 
         
     def initializeBoardSquareAreas(self):
