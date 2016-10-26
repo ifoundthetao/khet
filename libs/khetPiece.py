@@ -23,7 +23,7 @@ class KhetPiece(object):
         return self.orientation
         
     def setOrientation(self, orientation):
-        self.orientation = orientation
+        self.orientation = abs((int(orientation) % 4))
 
     def getImageLocation(self):
         return self.imageLocation
