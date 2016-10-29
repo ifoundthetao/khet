@@ -62,16 +62,14 @@ class PygamePresentationContainer(KhetPresentationContainer):
         
         otherwise it returns False
         """
-        
-        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
-        if (not isButtonOnePressed
-        and not isButtonThreePressed
-        ):
-            return False
         isSquareSelected = False
+        
+        if not self.renderEngine.isUserTryingToSelectSquare():
+            return False
         
         boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
         column, row = boardPosition
+
         if column is None and row is None:
             return False
 
@@ -102,7 +100,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
         else:
             piece.setOrientation(int(piece.getOrientation()) + 1)
 
-        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
+        column, row = boardPosition
+
         if column is None and row is None:
             return False
 
@@ -114,16 +114,13 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
 
     def isChangePieceOrientation(self):
-        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
-
-        """
-        Button three being pressed is for changing the piece orientation
-        """
-        if (not isButtonThreePressed 
+        if (not self.renderEngine.isUserTryingToChangeOrientation()
         or not self.gameState.hasSelectedSquare()):
             return False
 
-        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
+        column, row = boardPosition
+
         if column is None and row is None:
             return False
 
@@ -149,18 +146,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         
 
     def isMovePiece(self):
-        """
-        We will return the pygame.MOUSEBUTTONUP when this is true
-        that we are moving a piece.
-        
-        otherwise it returns False
-        """
-        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
-
-        """
-        Button one being pressed is for moving the actual piece
-        """
-        if (not isButtonOnePressed 
+        if (not self.renderEngine.isUserTryingToMovePiece() 
         or not self.gameState.hasSelectedSquare()):
             return False
         
@@ -169,7 +155,9 @@ class PygamePresentationContainer(KhetPresentationContainer):
         if not piece.canMove():  #Looking at you, Sphinx!
             return False
             
-        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
+        column, row = boardPosition
+
         if column is None and row is None:
             return False
 
@@ -206,7 +194,10 @@ class PygamePresentationContainer(KhetPresentationContainer):
         """
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
-        column, row = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+
+        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
+        column, row = boardPosition
+
         if column is None and row is None:
             return False
 

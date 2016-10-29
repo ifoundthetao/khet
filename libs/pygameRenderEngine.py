@@ -151,3 +151,16 @@ class PygameRenderEngine(object):
 
     def getBoardPositionOfEvent(self, skin):
         return skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+
+    def isUserTryingToSelectSquare(self):
+        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
+        return isButtonOnePressed or isButtonThreePressed
+
+    def isUserTryingToChangeOrientation(self):
+        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
+        return isButtonThreePressed 
+
+    def isUserTryingToMovePiece(self):
+        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
+        return isButtonOnePressed 
+
