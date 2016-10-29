@@ -9,7 +9,7 @@ Created on Sun Oct 16 16:04:55 2016
 import sys
 from libs.khetBoard import KhetBoard
 from libs.khetSkin import KhetSkin
-from libs.pygamePresentationContainer import PygamePresentationContainer
+from libs.khetPresentationContainer import KhetPresentationContainer
 from libs.khetGameState import KhetGameState
 from libs.pygameRenderEngine import PygameRenderEngine
 
@@ -18,7 +18,7 @@ renderEngine = PygameRenderEngine()
 gameState = KhetGameState()
 board = KhetBoard(defaultSkin)
 
-presentationContainer = PygamePresentationContainer( 
+presentationContainer = KhetPresentationContainer( 
     skin = defaultSkin,
     board = board,
     gameState = gameState,
