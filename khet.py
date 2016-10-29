@@ -11,11 +11,20 @@ from libs.khetBoard import KhetBoard
 from libs.khetSkin import KhetSkin
 from libs.pygamePresentationContainer import PygamePresentationContainer
 from libs.khetGameState import KhetGameState
-
-
+from libs.pygameRenderEngine import PygameRenderEngine
 
 defaultSkin = KhetSkin('default')
-presentationContainer = PygamePresentationContainer(defaultSkin)
+renderEngine = PygameRenderEngine()
+gameState = KhetGameState()
+board = KhetBoard(defaultSkin)
+
+presentationContainer = PygamePresentationContainer( 
+    skin = defaultSkin,
+    board = board,
+    gameState = gameState,
+    renderEngine = renderEngine
+)
+presentationContainer.setRenderEngine(renderEngine)
 
 presentationContainer.initialize()
 
@@ -26,9 +35,6 @@ presentationContainer.setTitle('Khet 2.0')
 presentationContainer.showEmptyBoard()
 presentationContainer.update()
 
-gameState = KhetGameState()
-
-board = KhetBoard(defaultSkin)
 board.initializeBoard(screen, defaultSkin)
 
 presentationContainer.setBoard(board)

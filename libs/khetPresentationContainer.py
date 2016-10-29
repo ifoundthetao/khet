@@ -12,9 +12,22 @@ class KhetPresentationContainer(object):
     
     This way, we can use different presentation models and keep the logic
     buried in the class, rather than mixed in with the rest of the code.
+
     """
-    def __init__(self, skin):
+    GAME_IS_IN_PROGRESS = True
+
+    def __init__(self, skin, gameState, board, renderEngine):
+        """
+        We may want to force the constructor to take the following:
+            skin
+            renderEngine
+            gameState
+            board
+        """
         self.skin = skin
+        self.gameState = gameState
+        self.board = board
+        self.renderEngine = renderEngine
         pass
         
     def initialize(self):

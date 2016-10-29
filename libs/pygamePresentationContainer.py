@@ -8,9 +8,14 @@ import pygame
 from .khetPresentationContainer import KhetPresentationContainer
 
 class PygamePresentationContainer(KhetPresentationContainer):
-    quitEvent = pygame.QUIT
-    GAME_IS_IN_PROGRESS = True
+        
+    def setRenderEngine(self, renderEngine):
+        self.renderEngine = renderEngine
+        self.setQuitEvent(renderEngine.getQuitEvent())
     
+    def setQuitEvent(self, quitEvent):
+        self.quitEvent = quitEvent
+
     def setBoard(self, board):
         self.board = board
     
@@ -18,25 +23,22 @@ class PygamePresentationContainer(KhetPresentationContainer):
         self.gameState = gameState
 
     def initialize(self):
-        pygame.init()
+        self.renderEngine.initialize()
         
     def update(self):
-        pygame.display.update()
+        self.renderEngine.update()
         
     def setTitle(self, title):
-        pygame.display.set_caption(title)
+        self.renderEngine.setTitle(title)
     
     def createBoard(self, size):
-        self.screen = pygame.display.set_mode(size)
-        return self.screen
+        self.renderEngine.createBoard(size)
     
     def showEmptyBoard(self):
-        boardLocation = self.skin.getBoardLocation()
-        backgroundImage = pygame.image.load(boardLocation)
-        self.screen.blit(backgroundImage, (0, 0))        
+        self.renderEngine.showEmptyBoard(self.skin)
     
     def quitPresenting(self):
-        pygame.quit()
+        self.renderEngine.quitPresenting()
         
     def getEvents(self):
         """
@@ -44,33 +46,18 @@ class PygamePresentationContainer(KhetPresentationContainer):
         Hopefully this will keep things clean, and allow for other
         styles of play.
         """
-        self.mousePositionX, self.mousePositionY = pygame.mouse.get_pos()
-        
-        return pygame.event.get()
+        events = self.renderEngine.getEvents()
+
+        self.mousePositionX = self.renderEngine.mousePositionX
+        self.mousePositionY = self.renderEngine.mousePositionY
+        return events
         
     def displayBoard(self):
-        self.showEmptyBoard()
-        for columnIndex, currentColumn in enumerate(self.board.boardState):
-            for rowIndex, square in enumerate(currentColumn):
-                if square.isOccupied():
-                    piece = square.getPiece()
-                    
-                    orientation = piece.getOrientation()
-                    imageLocation = piece.getImageLocation()
-                    pieceImage = pygame.image.load(imageLocation)
-                    
-                    #offsets = self.skin.getSquareOffsets(square.getRow(), square.getColumn())
-                    offsets = self.skin.getSquareOffsets(square.getColumn(), square.getRow())
-                    if int(orientation) > 0:
-                        rotatingDegrees = -1 * (90.0 * float(orientation))
-                        
-                        pieceImage = pygame.transform.rotate(pieceImage, rotatingDegrees)
-                    self.screen.blit(pieceImage, offsets)
-        self.update()
+        self.renderEngine.displayBoard(board = self.board, skin = self.skin)
 
     def selectSquare(self):
         """
-        We will return the pygame.MOUSEBUTTONDOWN when this is true
+        We will return the self.renderEngine.VALID_EVENT when this is true
         that we are selecting a piece.
         
         otherwise it returns False
@@ -92,18 +79,15 @@ class PygamePresentationContainer(KhetPresentationContainer):
         
         if (potentiallySelectedSquare.isOccupied()
         and self.gameState.getPlayersTurn() is potentiallySelectedSquare.piece.getPlayersPiece()):
-            isSquareSelected = pygame.MOUSEBUTTONDOWN
+            isSquareSelected = self.renderEngine.VALID_EVENT
             selectedSquare = potentiallySelectedSquare
 
         self.displayBoard()
 
         if isSquareSelected:
             self.gameState.setSelectedSquare(selectedSquare)
-            imageLocation = self.skin.getOrientationChangeIconLocation()
-            orientationChangeIcon = pygame.image.load(imageLocation)
-            offsets = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
-            self.screen.blit(orientationChangeIcon, offsets)                
-            self.update()
+            boardLocation = (selectedSquare.getColumn(), selectedSquare.getRow())
+            self.renderEngine.showOrientationIcon(skin = self.skin, boardLocation = boardLocation)
 
         return isSquareSelected
 
@@ -161,7 +145,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         or  ((xRelativeToSquare >= halfPieceSize and xRelativeToSquare <= self.skin.PIECE_IMAGE_SIZE)
             and (yRelativeToSquare >= 0 and yRelativeToSquare <=halfPieceSize))
         ):
-            return pygame.MOUSEBUTTONDOWN
+            return self.renderEngine.VALID_EVENT
             
         return False
         
@@ -215,7 +199,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
             return False
 
         #We will be moving a piece.
-        return pygame.MOUSEBUTTONDOWN
+        return self.renderEngine.VALID_EVENT
 
     def movePiece(self):
         """
@@ -244,7 +228,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
         self.displayBoard()
         self.fireShotAfterTurn()
         self.gameState.moveComplete()        
-        return pygame.MOUSEBUTTONDOWN
+        return self.renderEngine.VALID_EVENT
 
     def fireShotAfterTurn(self):
         LEFT = 3
@@ -289,11 +273,13 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
             if targetSquare.isOccupied():
                 piece = targetSquare.getPiece()
-                # We know that if a shot was fatal, 
-                # then single reflectors will be dead
-                # So we assume if it was not reflected,
-                # it was blocked,
-                # and thus no longer bounces.
+                """
+                We know that if a shot was fatal, 
+                then single reflectors will be dead
+                So we assume if it was not reflected,
+                it was blocked,
+                and thus no longer bounces.
+                """
                 if not piece.wasShotFatal(shotDirection):
                     wasReflected = piece.didReflect(shotDirection)
                     if wasReflected is False:
@@ -326,7 +312,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
                             shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
 
                         offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
-                        self.screen.blit(shotImage, offsets)                
+                        self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
                         self.update()
                 else:
                     stillBouncing = False
@@ -348,7 +334,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
 
                     offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
-                    self.screen.blit(shotImage, offsets)                
+                    self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
                     self.update()
             else:
                 imageLocation = self.skin.getStraightShotLocation()                    
@@ -360,7 +346,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
 
                 offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
-                self.screen.blit(shotImage, offsets)                
+                self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
                 self.update()
             row = targetSquare.getRow()
             column = targetSquare.getColumn()
