@@ -4,7 +4,6 @@ Created on Tue Oct 18 22:28:00 2016
 
 @author: tbolton
 """
-import pygame
 from .khetPresentationContainer import KhetPresentationContainer
 
 class PygamePresentationContainer(KhetPresentationContainer):
@@ -105,6 +104,12 @@ class PygamePresentationContainer(KhetPresentationContainer):
 
         if column is None and row is None:
             return False
+
+        boardLocation = (column, row)
+        self.completeTurn(boardLocation = boardLocation, piece = piece)
+
+    def completeTurn(self, boardLocation, piece):
+        column, row = boardLocation
 
         self.board.boardState[column][row].setOccupyingPiece(piece)
         self.gameState.unselectSquare()
@@ -212,12 +217,8 @@ class PygamePresentationContainer(KhetPresentationContainer):
         elif (destinationSquare.isValidForPlayer(self.gameState.getPlayersTurn())):
             self.board.boardState[selectedSquare.getColumn()][selectedSquare.getRow()].removeOccupyingPiece()
 
-        self.board.boardState[column][row].setOccupyingPiece(piece)
-        self.gameState.unselectSquare()
-        self.displayBoard()
-        self.fireShotAfterTurn()
-        self.gameState.moveComplete()        
-        return self.renderEngine.VALID_EVENT
+        boardLocation = (column, row)
+        self.completeTurn(boardLocation = boardLocation, piece = piece)
 
     def fireShotAfterTurn(self):
         LEFT = 3
@@ -278,7 +279,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
                         shotDirection = int(piece.getReflectionDirection(shotDirection))
                         
                         imageLocation = self.skin.getReflectedShotLocation()                    
-                        shotImage = pygame.image.load(imageLocation)
+                        shotImage = self.renderEngine.loadImage(imageLocation)
                         
                         rotatingDegrees = None
                         if shotDirection == LEFT:
@@ -298,7 +299,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
                             else:
                                 rotatingDegrees = float(3.0 * 90) * -1
                         if rotatingDegrees is not None:
-                            shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
+                            shotImage = self.renderEngine.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
 
                         offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
                         self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
@@ -309,7 +310,7 @@ class PygamePresentationContainer(KhetPresentationContainer):
                         self.GAME_IS_IN_PROGRESS = False
                     self.board.boardState[targetSquare.getColumn()][targetSquare.getRow()].removeOccupyingPiece()
                     imageLocation = self.skin.getHitShotLocation()                    
-                    shotImage = pygame.image.load(imageLocation)
+                    shotImage = self.renderEngine.loadImage(imageLocation)
 
                     rotatingDegrees = None
                     if shotDirection == LEFT:
@@ -319,20 +320,19 @@ class PygamePresentationContainer(KhetPresentationContainer):
                     if shotDirection == UP:
                         rotatingDegrees = 180.0
                     if rotatingDegrees is not None:
-                        shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
-
+                        shotImage = self.renderEngine.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
 
                     offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
                     self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
                     self.update()
             else:
                 imageLocation = self.skin.getStraightShotLocation()                    
-                shotImage = pygame.image.load(imageLocation)
+                shotImage = self.renderEngine.loadImage(imageLocation)
 
                 if (shotDirection == LEFT
                 or shotDirection == RIGHT):
                     rotatingDegrees = 90.0
-                    shotImage = pygame.transform.rotate(shotImage, rotatingDegrees)
+                    shotImage = self.renderEngine.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
 
                 offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
                 self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
