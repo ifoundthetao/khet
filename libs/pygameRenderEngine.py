@@ -147,3 +147,7 @@ class PygameRenderEngine(object):
 
     def renderToScreenWithOffset(self, imageResource, offset):
         self.screen.blit(imageResource, offset)
+
+
+    def getBoardPositionOfEvent(self, skin):
+        return skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)

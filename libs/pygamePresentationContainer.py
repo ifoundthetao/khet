@@ -70,11 +70,11 @@ class PygamePresentationContainer(KhetPresentationContainer):
             return False
         isSquareSelected = False
         
-        (column, row) = self.skin.getBoardPositionFromCoordinates(self.mousePositionX, self.mousePositionY)
+        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
+        column, row = boardPosition
         if column is None and row is None:
             return False
 
-        
         potentiallySelectedSquare = self.board.boardState[column][row]
         
         if (potentiallySelectedSquare.isOccupied()
@@ -92,8 +92,6 @@ class PygamePresentationContainer(KhetPresentationContainer):
         return isSquareSelected
 
     def changePieceOrientation(self):
-        (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()
-
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
         widthOffset, heightOffset = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
