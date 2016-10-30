@@ -280,7 +280,7 @@ class KhetPresentationContainer(object):
             if targetRow < 0 or targetRow > 7:
                 stillBouncing = False
                 continue
-            
+            boardLocation = targetColumn, targetRow
             targetSquare = self.board.boardState[targetColumn][targetRow]
 
             if targetSquare.isOccupied():
@@ -297,7 +297,6 @@ class KhetPresentationContainer(object):
                     if wasReflected is False:
                         stillBouncing = False
                     else:
-                        boardLocation = (targetSquare.getColumn(), targetSquare.getRow())
                         initialShotDirection = int(shotDirection)
                         reflectedShotDirection = int(piece.getReflectionDirection(initialShotDirection))
 
