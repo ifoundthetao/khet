@@ -312,22 +312,13 @@ class KhetPresentationContainer(object):
                     if targetSquare.piece.isGameFinishedWhenDead():
                         self.GAME_IS_IN_PROGRESS = False
                     self.board.boardState[targetSquare.getColumn()][targetSquare.getRow()].removeOccupyingPiece()
-                    imageLocation = self.skin.getHitShotLocation()                    
-                    shotImage = self.renderEngine.loadImage(imageLocation)
 
-                    rotatingDegrees = None
-                    if shotDirection == LEFT:
-                        rotatingDegrees = -90.0
-                    if shotDirection == RIGHT:
-                        rotatingDegrees = 90.0
-                    if shotDirection == UP:
-                        rotatingDegrees = 180.0
-                    if rotatingDegrees is not None:
-                        shotImage = self.renderEngine.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
+                    self.renderEngine.drawHitShot(
+                        shotDirection = shotDirection, 
+                        boardLocation = boardLocation, 
+                        skin = self.skin
+                    )
 
-                    offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
-                    self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
-                    self.update()
             else:
                 imageLocation = self.skin.getStraightShotLocation()                    
                 shotImage = self.renderEngine.loadImage(imageLocation)

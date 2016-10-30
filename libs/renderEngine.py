@@ -57,7 +57,24 @@ class RenderEngine(object):
         self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)                
         self.update()
 
-    #def drawHitShot(self, orientation, square):
+    def drawHitShot(self, shotDirection, boardLocation, skin):
+        imageLocation = skin.getHitShotLocation()                    
+        shotImage = self.loadImage(imageLocation)
+        column, row = boardLocation
+
+        rotatingDegrees = None
+        if shotDirection == self.LEFT:
+            rotatingDegrees = -90.0
+        if shotDirection == self.RIGHT:
+            rotatingDegrees = 90.0
+        if shotDirection == self.UP:
+            rotatingDegrees = 180.0
+        if rotatingDegrees is not None:
+            shotImage = self.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
+
+        offsets = skin.getSquareOffsets(column, row)
+        self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
+        self.update()
 
     #def drawStraightShot(self, orientation, square):
 
