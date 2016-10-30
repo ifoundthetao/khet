@@ -8,8 +8,8 @@ Created on Wed Oct 19 03:14:32 2016
 from .khetPiece import KhetPiece
 
 class KhetProtectedPiece(KhetPiece):
-    def __init__(self, playersPiece, orientation = 0):
-        super().__init__(playersPiece, orientation)
+    def __init__(self, playersPiece, orientation, imageLocation, boardLocation):
+        super().__init__(playersPiece, orientation, imageLocation, boardLocation)
         self.deathMeansGameEnd = True
 
     def wasShotFatal(self, shotDirection):

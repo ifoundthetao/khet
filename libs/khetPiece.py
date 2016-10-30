@@ -6,7 +6,7 @@ Created on Wed Oct 19 03:04:12 2016
 """
 class KhetPiece(object):
     
-    def __init__(self, playersPiece, orientation = 0, imageLocation = ''):
+    def __init__(self, playersPiece, orientation, imageLocation, boardLocation):
         self.imageLocation = imageLocation
         self.orientation = orientation
         self.playersPiece = playersPiece
@@ -17,7 +17,7 @@ class KhetPiece(object):
         self.isReflecter = False
         self.isSwappable = False
         self.deathMeansGameEnd = False
-        self.boardLocation = (None, None)
+        self.boardLocation = boardLocation
         
     def getOrientation(self):
         return self.orientation
