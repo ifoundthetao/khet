@@ -111,7 +111,7 @@ class KhetSkin(object):
         """
         return self.name + '/' + self.PLAYER_TWO_SHOOTER_FILE
         
-    def getBoardLocation(self):
+    def getBoardImageLocation(self):
         return self.name + '/' + self.BOARD_LOCATION
         
     def getBoardHeight(self):

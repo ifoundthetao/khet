@@ -15,8 +15,7 @@ class RenderEngine(object):
     QUIT_EVENT = 'NEEDS TO BE DEFINED'
 
     def showEmptyBoard(self, skin):
-        #TODO: Rename method to getBoardImageLocation
-        boardImageLocation = skin.getBoardLocation()
+        boardImageLocation = skin.getBoardImageLocation()
         backgroundImage = self.loadImage(boardImageLocation)
         self.renderToScreenWithOffset(imageResource = backgroundImage, offset = (0, 0))
 
