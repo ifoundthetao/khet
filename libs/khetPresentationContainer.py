@@ -320,16 +320,10 @@ class KhetPresentationContainer(object):
                     )
 
             else:
-                imageLocation = self.skin.getStraightShotLocation()                    
-                shotImage = self.renderEngine.loadImage(imageLocation)
+                self.renderEngine.drawStraightShot(
+                    shotDirection = shotDirection, 
+                    boardLocation = boardLocation, 
+                    skin = self.skin)
 
-                if (shotDirection == LEFT
-                or shotDirection == RIGHT):
-                    rotatingDegrees = 90.0
-                    shotImage = self.renderEngine.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
-
-                offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
-                self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
-                self.update()
             row = targetSquare.getRow()
             column = targetSquare.getColumn()

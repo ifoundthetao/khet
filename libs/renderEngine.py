@@ -19,16 +19,7 @@ class RenderEngine(object):
         backgroundImage = self.loadImage(boardImageLocation)
         self.renderToScreenWithOffset(imageResource = backgroundImage, offset = (0, 0))
 
-    def showOrientationIcon(self, skin, gameState):
-        self.gameState.setSelectedSquare(selectedSquare)
-        imageLocation = self.skin.getOrientationChangeIconLocation()
-        orientationChangeIcon = self.loadImage(imageLocation)
-        offsets = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
-        self.renderToScreenWithOffset(imageResource = orientationChangeIcon, offset = offsets)                
-        self.update()
-
     def drawReflectedShot(self, initialShotDirection, reflectedShotDirection, boardLocation, skin):
-
         imageLocation = skin.getReflectedShotLocation()                    
         shotImage = self.loadImage(imageLocation)
         
@@ -76,7 +67,19 @@ class RenderEngine(object):
         self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
         self.update()
 
-    #def drawStraightShot(self, orientation, square):
+    def drawStraightShot(self, shotDirection, boardLocation, skin):
+        imageLocation = skin.getStraightShotLocation()                    
+        shotImage = self.loadImage(imageLocation)
+
+        if (shotDirection == self.LEFT
+        or shotDirection == self.RIGHT):
+            rotatingDegrees = 90.0
+            shotImage = self.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
+
+        column, row = (boardLocation)
+        offsets = skin.getSquareOffsets(column, row)
+        self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
+        self.update()
 
 
     def showOrientationIcon(self, skin, boardLocation):
