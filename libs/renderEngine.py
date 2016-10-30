@@ -19,20 +19,6 @@ class RenderEngine(object):
         backgroundImage = self.loadImage(boardImageLocation)
         self.renderToScreenWithOffset(imageResource = backgroundImage, offset = (0, 0))
 
-    def displayOrientedImage(self, skin, square):
-        piece = square.getPiece()
-        
-        orientation = piece.getOrientation()
-        imageLocation = piece.getImageLocation()
-        pieceImage = self.loadImage(imageLocation)
-        
-        offsets = self.skin.getSquareOffsets(square.getColumn(), square.getRow())
-        if int(orientation) > 0:
-            rotatingDegrees = -1 * (90.0 * float(orientation))
-            
-            pieceImage = self.rotateImage(imageResource = pieceImage, degrees = rotatingDegrees)
-        self.renderToScreenWithOffset(imageResource = pieceImage, offset = offsets)
-
     def showOrientationIcon(self, skin, gameState):
         self.gameState.setSelectedSquare(selectedSquare)
         imageLocation = self.skin.getOrientationChangeIconLocation()
@@ -41,23 +27,21 @@ class RenderEngine(object):
         self.renderToScreenWithOffset(imageResource = orientationChangeIcon, offset = offsets)                
         self.update()
 
-    def drawReflectedShot(self, shotDirection, boardLocation):
-        initialShotDirection = int(shotDirection)
-        shotDirection = int(piece.getReflectionDirection(shotDirection))
-        
-        imageLocation = self.skin.getReflectedShotLocation()                    
+    def drawReflectedShot(self, initialShotDirection, reflectedShotDirection, boardLocation, skin):
+
+        imageLocation = skin.getReflectedShotLocation()                    
         shotImage = self.loadImage(imageLocation)
         
         rotatingDegrees = None
-        if shotDirection == self.LEFT:
+        if reflectedShotDirection == self.LEFT:
             if initialShotDirection == self.UP:
                 rotatingDegrees = float(3.0 * 90) * -1
-        elif shotDirection == self.RIGHT:
+        elif reflectedShotDirection == self.RIGHT:
             if initialShotDirection == self.UP:
                 rotatingDegrees = float(2.0 * 90) * -1
             else:
                 rotatingDegrees = float(1.0 * 90) * -1
-        elif shotDirection == self.UP:
+        elif reflectedShotDirection == self.UP:
             if initialShotDirection == self.LEFT:
                 rotatingDegrees = float(1.0 * 90) * -1
         else:
@@ -69,7 +53,7 @@ class RenderEngine(object):
             shotImage = self.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
 
         column, row = boardLocation
-        offsets = self.skin.getSquareOffsets(column, row)
+        offsets = skin.getSquareOffsets(column, row)
         self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)                
         self.update()
 

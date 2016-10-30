@@ -297,35 +297,17 @@ class KhetPresentationContainer(object):
                     if wasReflected is False:
                         stillBouncing = False
                     else:
+                        boardLocation = (targetSquare.getColumn(), targetSquare.getRow())
                         initialShotDirection = int(shotDirection)
-                        shotDirection = int(piece.getReflectionDirection(shotDirection))
-                        
-                        imageLocation = self.skin.getReflectedShotLocation()                    
-                        shotImage = self.renderEngine.loadImage(imageLocation)
-                        
-                        rotatingDegrees = None
-                        if shotDirection == LEFT:
-                            if initialShotDirection == UP:
-                                rotatingDegrees = float(3.0 * 90) * -1
-                        elif shotDirection == RIGHT:
-                            if initialShotDirection == UP:
-                                rotatingDegrees = float(2.0 * 90) * -1
-                            else:
-                                rotatingDegrees = float(1.0 * 90) * -1
-                        elif shotDirection == UP:
-                            if initialShotDirection == LEFT:
-                                rotatingDegrees = float(1.0 * 90) * -1
-                        else:
-                            if initialShotDirection == LEFT:
-                                rotatingDegrees = float(2.0 * 90) * -1
-                            else:
-                                rotatingDegrees = float(3.0 * 90) * -1
-                        if rotatingDegrees is not None:
-                            shotImage = self.renderEngine.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
+                        reflectedShotDirection = int(piece.getReflectionDirection(initialShotDirection))
 
-                        offsets = self.skin.getSquareOffsets(targetSquare.getColumn(), targetSquare.getRow())
-                        self.renderEngine.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
-                        self.update()
+                        self.renderEngine.drawReflectedShot(
+                            initialShotDirection = initialShotDirection,
+                            reflectedShotDirection = reflectedShotDirection,
+                            boardLocation = boardLocation,
+                            skin = self.skin
+                        )
+                        shotDirection = reflectedShotDirection
                 else:
                     stillBouncing = False
                     if targetSquare.piece.isGameFinishedWhenDead():
