@@ -47,7 +47,7 @@ class PygameRenderEngine(RenderEngine):
         self.screen.blit(imageResource, offset)
 
     def getBoardLocationOfEvent(self, skin):
-        return skin.getBoardLocationFromCoordinates(self.mousePositionX, self.mousePositionY)
+        return skin.getBoardLocationFromCoordinates((self.mousePositionX, self.mousePositionY))
 
     def isUserTryingToSelectSquare(self):
         (isButtonOnePressed, isButtonTwoPressed, isButtonThreePressed) = pygame.mouse.get_pressed()

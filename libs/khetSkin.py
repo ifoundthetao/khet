@@ -134,12 +134,11 @@ class KhetSkin(object):
         
         return (widthOffset, heightOffset)
         
-    def isCollision(self, boardLocation, eventX, eventY):
-        """
-        TODO: eventX, eventY could be a tuple or object.
-        """
+    def isCollision(self, boardLocation, pixelCoordinates):
         isWidthColliding = False
         isHeightColliding = False
+
+        eventX, eventY = pixelCoordinates
 
         (squareLeft,
         squareRight,
@@ -155,13 +154,11 @@ class KhetSkin(object):
         
         return isCollision
         
-    def getBoardLocationFromCoordinates(self, x, y):
-        """
-        TODO: x,y can probably be a tuple or object
-        """
+    def getBoardLocationFromCoordinates(self, pixelCoordinates):
+        x, y = pixelCoordinates
         for columnIndex, column in enumerate(self.boardSquareAreas):
             for rowIndex, square in enumerate(column):
-                if self.isCollision((columnIndex, rowIndex), x, y):
+                if self.isCollision((columnIndex, rowIndex), pixelCoordinates):
                     return (columnIndex, rowIndex)
         return (None, None)
 
