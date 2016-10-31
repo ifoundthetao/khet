@@ -136,7 +136,7 @@ class RenderEngine(object):
     def renderToScreenWithOffset(self, imageResource, offset):
         pass
 
-    def getBoardPositionOfEvent(self, skin):
+    def getBoardLocationOfEvent(self, skin):
         pass
 
     def isUserTryingToSelectSquare(self):

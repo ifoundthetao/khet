@@ -151,7 +151,7 @@ class KhetSkin(object):
         
         return isCollision
         
-    def getBoardPositionFromCoordinates(self, x, y):
+    def getBoardLocationFromCoordinates(self, x, y):
         for columnIndex, column in enumerate(self.boardSquareAreas):
             for rowIndex, square in enumerate(column):
                 if self.isCollision(columnIndex, rowIndex, x, y):

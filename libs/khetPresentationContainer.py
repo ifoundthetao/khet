@@ -88,8 +88,8 @@ class KhetPresentationContainer(object):
         if not self.renderEngine.isUserTryingToSelectSquare():
             return False
         
-        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
-        column, row = boardPosition
+        boardLocation = self.renderEngine.getBoardLocationOfEvent(skin = self.skin)
+        column, row = boardLocation
 
         if column is None and row is None:
             return False
@@ -121,8 +121,8 @@ class KhetPresentationContainer(object):
         else:
             piece.setOrientation(int(piece.getOrientation()) + 1)
 
-        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
-        column, row = boardPosition
+        boardLocation = self.renderEngine.getBoardLocationOfEvent(skin = self.skin)
+        column, row = boardLocation
 
         if column is None and row is None:
             return False
@@ -145,8 +145,8 @@ class KhetPresentationContainer(object):
         or not self.gameState.hasSelectedSquare()):
             return False
 
-        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
-        column, row = boardPosition
+        boardLocation = self.renderEngine.getBoardLocationOfEvent(skin = self.skin)
+        column, row = boardLocation
 
         if column is None and row is None:
             return False
@@ -182,8 +182,8 @@ class KhetPresentationContainer(object):
         if not piece.canMove():  #Looking at you, Sphinx!
             return False
             
-        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
-        column, row = boardPosition
+        boardLocation = self.renderEngine.getBoardLocationOfEvent(skin = self.skin)
+        column, row = boardLocation
 
         if column is None and row is None:
             return False
@@ -222,8 +222,8 @@ class KhetPresentationContainer(object):
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
 
-        boardPosition = self.renderEngine.getBoardPositionOfEvent(skin = self.skin)
-        column, row = boardPosition
+        boardLocation = self.renderEngine.getBoardLocationOfEvent(skin = self.skin)
+        column, row = boardLocation
 
         if column is None and row is None:
             return False
