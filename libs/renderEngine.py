@@ -43,15 +43,13 @@ class RenderEngine(object):
         if rotatingDegrees is not None:
             shotImage = self.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
 
-        column, row = boardLocation
-        offsets = skin.getSquareOffsets(column, row)
+        offsets = skin.getSquareOffsets(boardLocation)
         self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)                
         self.update()
 
     def drawHitShot(self, shotDirection, boardLocation, skin):
         imageLocation = skin.getHitShotLocation()                    
         shotImage = self.loadImage(imageLocation)
-        column, row = boardLocation
 
         rotatingDegrees = None
         if shotDirection == self.LEFT:
@@ -63,7 +61,7 @@ class RenderEngine(object):
         if rotatingDegrees is not None:
             shotImage = self.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
 
-        offsets = skin.getSquareOffsets(column, row)
+        offsets = skin.getSquareOffsets(boardLocation)
         self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
         self.update()
 
@@ -76,17 +74,15 @@ class RenderEngine(object):
             rotatingDegrees = 90.0
             shotImage = self.rotateImage(imageResource = shotImage, degrees = rotatingDegrees)
 
-        column, row = (boardLocation)
-        offsets = skin.getSquareOffsets(column, row)
+        offsets = skin.getSquareOffsets(boardLocation)
         self.renderToScreenWithOffset(imageResource = shotImage, offset = offsets)
         self.update()
 
 
     def showOrientationIcon(self, skin, boardLocation):
-        column, row = boardLocation
         imageLocation = skin.getOrientationChangeIconLocation()
         orientationChangeIcon = self.loadImage(imageLocation)
-        offsets = skin.getSquareOffsets(column, row)
+        offsets = skin.getSquareOffsets(boardLocation)
         self.renderToScreenWithOffset(imageResource = orientationChangeIcon, offset = offsets)                
         self.update()
 
@@ -100,8 +96,8 @@ class RenderEngine(object):
                     orientation = piece.getOrientation()
                     imageLocation = piece.getImageLocation()
                     pieceImage = self.loadImage(imageLocation)
-                    
-                    offsets = skin.getSquareOffsets(square.getColumn(), square.getRow())
+                    boardLocation = (square.getColumn(), square.getRow())
+                    offsets = skin.getSquareOffsets(boardLocation)
                     if int(orientation) > 0:
                         rotatingDegrees = -1 * (90.0 * float(orientation))
                         

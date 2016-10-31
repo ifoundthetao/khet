@@ -123,7 +123,8 @@ class KhetSkin(object):
     def getBoardSize(self):
         return (self.BOARD_WIDTH, self.BOARD_HEIGHT)
         
-    def getSquareOffsets(self, columnIndex, rowIndex):
+    def getSquareOffsets(self, boardLocation):
+        columnIndex, rowIndex = boardLocation
         heightOffset = (self.BOARD_BORDER_OFFSET 
                     + ((1 + rowIndex) * self.BOARD_DIVIDER_OFFSET)
                     + (rowIndex * self.PIECE_IMAGE_SIZE))
@@ -133,14 +134,17 @@ class KhetSkin(object):
         
         return (widthOffset, heightOffset)
         
-    def isCollision(self, columnIndex, rowIndex, eventX, eventY):
+    def isCollision(self, boardLocation, eventX, eventY):
+        """
+        TODO: eventX, eventY could be a tuple or object.
+        """
         isWidthColliding = False
         isHeightColliding = False
 
         (squareLeft,
         squareRight,
         squareTop,
-        squareBottom) = self.getSquareDimensionsOnBoard(columnIndex, rowIndex)
+        squareBottom) = self.getSquareDimensionsOnBoard(boardLocation)
 
         if eventX >= squareLeft and eventX <= squareRight:
             isWidthColliding = True
@@ -152,9 +156,12 @@ class KhetSkin(object):
         return isCollision
         
     def getBoardLocationFromCoordinates(self, x, y):
+        """
+        TODO: x,y can probably be a tuple or object
+        """
         for columnIndex, column in enumerate(self.boardSquareAreas):
             for rowIndex, square in enumerate(column):
-                if self.isCollision(columnIndex, rowIndex, x, y):
+                if self.isCollision((columnIndex, rowIndex), x, y):
                     return (columnIndex, rowIndex)
         return (None, None)
 
@@ -164,13 +171,13 @@ class KhetSkin(object):
         
         for columnIndex, column in enumerate(squares):
             for rowIndex, square in enumerate(column):
-                squareDimensions = self.getSquareDimensionsOnBoard(columnIndex, rowIndex)
+                squareDimensions = self.getSquareDimensionsOnBoard((columnIndex, rowIndex))
                 squares[columnIndex][rowIndex] = squareDimensions
                 
         self.boardSquareAreas = squares
                 
-    def getSquareDimensionsOnBoard(self, columnIndex, rowIndex):
-        squareLeft, squareTop = self.getSquareOffsets(columnIndex, rowIndex)
+    def getSquareDimensionsOnBoard(self, boardLocation):
+        squareLeft, squareTop = self.getSquareOffsets(boardLocation)
         squareRight = squareLeft + self.PIECE_IMAGE_SIZE
         squareBottom = squareTop + + self.PIECE_IMAGE_SIZE
         

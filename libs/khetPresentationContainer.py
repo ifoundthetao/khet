@@ -113,7 +113,8 @@ class KhetPresentationContainer(object):
     def changePieceOrientation(self):
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
-        widthOffset, heightOffset = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
+        boardLocation = (selectedSquare.getColumn(), selectedSquare.getRow())
+        widthOffset, heightOffset = self.skin.getSquareOffsets(boardLocation)
 
         halfPieceSize = (self.skin.PIECE_IMAGE_SIZE / 2)
         if (abs(self.mousePositionX - widthOffset) <= halfPieceSize):
@@ -156,7 +157,8 @@ class KhetPresentationContainer(object):
         selectedSquare = self.gameState.getSelectedSquare()
         piece = selectedSquare.getPiece()
 
-        widthOffset, heightOffset = self.skin.getSquareOffsets(selectedSquare.getColumn(), selectedSquare.getRow())
+        boardLocation = (selectedSquare.getColumn(), selectedSquare.getRow())
+        widthOffset, heightOffset = self.skin.getSquareOffsets(boardLocation)
         xRelativeToSquare = self.mousePositionX - widthOffset
         yRelativeToSquare = self.mousePositionY - heightOffset
 
